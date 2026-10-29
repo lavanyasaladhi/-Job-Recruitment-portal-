@@ -1,18 +1,54 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import Footer from '../components/Footer';
+import Footer from "../components/Footer";
 import JobCard from "../components/JobCard";
 import { getJobs } from "../services/api";
 import "./jobs.css";
 
-function SearchBar({ keyword, location, onSearch }) {
+function SearchBar({
+  keyword,
+  location,
+  experience,
+  jobType,
+  onSearch,
+  onClear,
+}) {
   const [keywordDraft, setKeywordDraft] = useState(keyword);
   const [locationDraft, setLocationDraft] = useState(location);
+  const [experienceDraft, setExperienceDraft] = useState(experience);
+  const [jobTypeDraft, setJobTypeDraft] = useState(jobType);
+
+  const hasActiveFilters = Boolean(
+    keywordDraft.trim() ||
+      locationDraft.trim() ||
+      experienceDraft !== "all" ||
+      jobTypeDraft !== "all"
+  );
 
   function handleSubmit(event) {
     event.preventDefault();
-    onSearch(keywordDraft, locationDraft);
+    onSearch(keywordDraft, locationDraft, experienceDraft, jobTypeDraft);
+  }
+
+  function handleExperienceChange(event) {
+    const nextExperience = event.target.value;
+    setExperienceDraft(nextExperience);
+    onSearch(keywordDraft, locationDraft, nextExperience, jobTypeDraft);
+  }
+
+  function handleJobTypeChange(event) {
+    const nextJobType = event.target.value;
+    setJobTypeDraft(nextJobType);
+    onSearch(keywordDraft, locationDraft, experienceDraft, nextJobType);
+  }
+
+  function handleClear() {
+    setKeywordDraft("");
+    setLocationDraft("");
+    setExperienceDraft("all");
+    setJobTypeDraft("all");
+    onClear();
   }
 
   return (
@@ -39,9 +75,52 @@ function SearchBar({ keyword, location, onSearch }) {
         />
       </div>
 
-      <button className="jobs-search-button" type="submit">
-        Search Jobs
-      </button>
+      <div className="search-field">
+        <label htmlFor="experience">Experience</label>
+        <select
+          id="experience"
+          value={experienceDraft}
+          onChange={handleExperienceChange}
+        >
+          <option value="all">Any experience</option>
+          <option value="0">Entry level (0 yrs)</option>
+          <option value="1">Up to 1 year</option>
+          <option value="2">Up to 2 years</option>
+          <option value="3">Up to 3 years</option>
+          <option value="5">Up to 5 years</option>
+        </select>
+      </div>
+
+      <div className="search-field">
+        <label htmlFor="jobType">Job type</label>
+        <select
+          id="jobType"
+          value={jobTypeDraft}
+          onChange={handleJobTypeChange}
+        >
+          <option value="all">All job types</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+        </select>
+      </div>
+
+      <div className="search-actions">
+        <button className="jobs-search-button" type="submit">
+          Search Jobs
+        </button>
+        {hasActiveFilters && (
+          <button
+            className="jobs-reset-button"
+            type="button"
+            onClick={handleClear}
+            title="Reset search and filters"
+          >
+            Clear
+          </button>
+        )}
+      </div>
     </form>
   );
 }
@@ -111,26 +190,20 @@ function Jobs() {
     });
   }, [experience, jobType, jobs, keyword, location]);
 
-  function applySearch(keywordDraft, locationDraft) {
+  function applySearch(keywordDraft, locationDraft, experienceDraft, jobTypeDraft) {
     const nextParams = new URLSearchParams();
-    const nextKeyword = keywordDraft.trim();
-    const nextLocation = locationDraft.trim();
+    const nextKeyword = (keywordDraft || "").trim();
+    const nextLocation = (locationDraft || "").trim();
 
     if (nextKeyword) nextParams.set("q", nextKeyword);
     if (nextLocation) nextParams.set("location", nextLocation);
-    if (experience !== "all") nextParams.set("experience", experience);
-    if (jobType !== "all") nextParams.set("type", jobType);
-
-    setSearchParams(nextParams);
-  }
-
-  function updateFilter(name, value) {
-    const nextParams = new URLSearchParams(searchParams);
-    if (value === "all") {
-      nextParams.delete(name);
-    } else {
-      nextParams.set(name, value);
+    if (experienceDraft && experienceDraft !== "all") {
+      nextParams.set("experience", experienceDraft);
     }
+    if (jobTypeDraft && jobTypeDraft !== "all") {
+      nextParams.set("type", jobTypeDraft);
+    }
+
     setSearchParams(nextParams);
   }
 
@@ -155,58 +228,16 @@ function Jobs() {
         </section>
 
         <SearchBar
-          key={`${keyword}\u0000${location}`}
+          key={`${keyword}\u0000${location}\u0000${experience}\u0000${jobType}`}
           keyword={keyword}
           location={location}
+          experience={experience}
+          jobType={jobType}
           onSearch={applySearch}
+          onClear={clearFilters}
         />
 
         <section className="jobs-results">
-          <aside className="jobs-filters" aria-label="Filter jobs">
-            <h2>Filters</h2>
-
-            <div className="filter-group">
-              <label htmlFor="experience">Experience</label>
-              <select
-                id="experience"
-                value={experience}
-                onChange={(event) =>
-                  updateFilter("experience", event.target.value)
-                }
-              >
-                <option value="all">Any experience</option>
-                <option value="0">Entry level (0 years)</option>
-                <option value="1">Up to 1 year</option>
-                <option value="2">Up to 2 years</option>
-                <option value="3">Up to 3 years</option>
-                <option value="5">Up to 5 years</option>
-              </select>
-            </div>
-
-            <div className="filter-group">
-              <label htmlFor="jobType">Job type</label>
-              <select
-                id="jobType"
-                value={jobType}
-                onChange={(event) => updateFilter("type", event.target.value)}
-              >
-                <option value="all">All job types</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Internship">Internship</option>
-                <option value="Contract">Contract</option>
-              </select>
-            </div>
-
-            <button
-              className="clear-filters"
-              type="button"
-              onClick={clearFilters}
-            >
-              Clear all filters
-            </button>
-          </aside>
-
           <div className="jobs-list-section" aria-live="polite">
             <div className="jobs-list-heading">
               <div>

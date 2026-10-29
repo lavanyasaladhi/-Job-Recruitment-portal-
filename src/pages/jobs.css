@@ -4,7 +4,7 @@
 }
 
 .jobs-main {
-  width: min(1120px, calc(100% - clamp(32px, 7vw, 96px)));
+  width: min(1280px, calc(100% - clamp(32px, 5vw, 80px)));
   margin: 0 auto;
   padding: clamp(32px, 5vh, 56px) 0 clamp(48px, 8vh, 80px);
 }
@@ -41,12 +41,13 @@
   font-size: 16px;
 }
 
+/* Horizontal Search & Filter Panel */
 .jobs-search-panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  grid-template-columns: 1.35fr 1.15fr 0.95fr 0.95fr auto;
   align-items: end;
-  gap: 16px;
-  padding: 22px;
+  gap: 14px;
+  padding: 22px 24px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
@@ -60,22 +61,31 @@
   min-width: 0;
 }
 
-.search-field label,
-.filter-group label {
+.search-field label {
   color: var(--color-deep);
   font-size: 13px;
   font-weight: 650;
 }
 
 .search-field input,
-.filter-group select {
+.search-field select {
   width: 100%;
   min-height: 46px;
-  padding: 10px 12px;
+  padding: 10px 14px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   color: var(--color-text);
+  font-size: 14px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search-field select {
+  cursor: pointer;
+  appearance: auto;
 }
 
 .search-field input::placeholder {
@@ -83,21 +93,28 @@
 }
 
 .search-field input:focus,
-.filter-group select:focus {
+.search-field select:focus {
   border-color: var(--color-primary);
   outline: 3px solid rgb(99 107 47 / 14%);
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .jobs-search-button,
 .jobs-empty-state button {
   min-height: 46px;
-  padding: 10px 20px;
+  padding: 10px 22px;
   border: 1px solid var(--color-primary);
   border-radius: var(--radius-sm);
   background: var(--color-primary);
   color: #fff;
   font-size: 14px;
   font-weight: 650;
+  white-space: nowrap;
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
@@ -109,57 +126,34 @@
   background: var(--color-primary-hover);
 }
 
+.jobs-reset-button {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f4f5ee;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.jobs-reset-button:hover {
+  background: #e6e8dc;
+  color: var(--color-deep);
+}
+
+/* Results section (full width now that left sidebar is merged) */
 .jobs-results {
-  display: grid;
-  grid-template-columns: minmax(205px, 240px) minmax(0, 1fr);
-  align-items: start;
-  gap: 28px;
+  width: 100%;
   margin-top: 36px;
 }
 
-.jobs-filters {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding: 22px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
-}
-
-.jobs-filters h2,
-.jobs-list-heading h2 {
-  color: var(--color-deep);
-  font-size: 19px;
-  font-weight: 750;
-}
-
-.filter-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.filter-group select {
-  min-height: 42px;
-  padding-right: 28px;
-  font-size: 13px;
-}
-
-.clear-filters {
-  align-self: flex-start;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 650;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
 .jobs-list-section {
+  width: 100%;
   min-width: 0;
 }
 
@@ -168,7 +162,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+}
+
+.jobs-list-heading h2 {
+  color: var(--color-deep);
+  font-size: 22px;
+  font-weight: 750;
 }
 
 .jobs-list-heading p {
@@ -179,7 +179,7 @@
 
 .job-count {
   flex-shrink: 0;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   background: #f0f1e8;
   color: var(--color-deep);
@@ -187,10 +187,11 @@
   font-weight: 650;
 }
 
+/* 3 Job cards in a single line on desktop */
 .jobs-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .jobs-empty-state {
@@ -352,31 +353,25 @@
   font-size: 12px;
 }
 
-@media (max-width: 820px) {
-  .jobs-main {
-    width: min(calc(100% - 36px), 680px);
-    padding-top: 40px;
-  }
-
-  .jobs-results {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .jobs-filters {
-    display: grid;
+/* Tablet view: 2 cards per row */
+@media (max-width: 1080px) {
+  .jobs-search-panel {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: end;
-    gap: 14px;
   }
 
-  .jobs-filters h2,
-  .clear-filters {
+  .search-actions {
     grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+
+  .jobs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
   }
 }
 
-@media (max-width: 560px) {
+/* Mobile view: 1 card per row */
+@media (max-width: 640px) {
   .jobs-main {
     width: calc(100% - 32px);
     padding: 34px 0 56px;
@@ -388,7 +383,7 @@
   }
 
   .jobs-heading h1 {
-    font-size: 36px;
+    font-size: 34px;
     letter-spacing: -1px;
   }
 
@@ -398,23 +393,19 @@
 
   .jobs-search-panel {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     padding: 18px;
     border-radius: var(--radius-md);
   }
 
-  .search-field,
-  .search-field input {
-    min-width: 0;
-  }
-
-  .jobs-search-button {
+  .search-actions {
+    flex-direction: column;
     width: 100%;
   }
 
-  .jobs-filters {
-    padding: 18px;
-    border-radius: var(--radius-md);
+  .jobs-search-button,
+  .jobs-reset-button {
+    width: 100%;
   }
 
   .jobs-list-heading {
@@ -422,7 +413,7 @@
   }
 
   .jobs-list-heading h2 {
-    font-size: 17px;
+    font-size: 19px;
   }
 
   .job-details-header {
@@ -431,17 +422,6 @@
 
   .jobs-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
-  }
-}
-
-@media (max-width: 380px) {
-  .jobs-filters {
-    grid-template-columns: 1fr;
-  }
-
-  .jobs-filters h2,
-  .clear-filters {
-    grid-column: auto;
+    gap: 16px;
   }
 }
