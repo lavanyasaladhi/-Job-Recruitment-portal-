@@ -6,224 +6,213 @@ import JobCard from "../components/JobCard";
 import { getJobs } from "../services/api";
 import "./jobs.css";
 
-function SearchBar({
-  keyword,
-  location,
-  experience,
-  jobType,
-  onSearch,
-  onClear,
-}) {
+function BriefcaseIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+    </svg>
+  );
+}
+
+function SearchIcon({ size = 18 }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function FilterSlidersIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <line x1="4" y1="21" x2="4" y2="14" />
+      <line x1="4" y1="10" x2="4" y2="3" />
+      <line x1="12" y1="21" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12" y2="3" />
+      <line x1="20" y1="21" x2="20" y2="16" />
+      <line x1="20" y1="12" x2="20" y2="3" />
+      <line x1="1" y1="14" x2="7" y2="14" />
+      <line x1="9" y1="8" x2="15" y2="8" />
+      <line x1="17" y1="16" x2="23" y2="16" />
+    </svg>
+  );
+}
+
+function RefreshIcon() {
+  return (
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M23 4v6h-6" />
+      <path d="M1 20v-6h6" />
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+    </svg>
+  );
+}
+
+function SearchBar({ keyword, location, onSearch }) {
   const [keywordDraft, setKeywordDraft] = useState(keyword);
   const [locationDraft, setLocationDraft] = useState(location);
-  const [showFilters, setShowFilters] = useState(false);
-
-  // Count how many filter criteria are currently active
-  const activeFilterCount =
-    (experience !== "all" ? 1 : 0) + (jobType !== "all" ? 1 : 0);
 
   function handleSubmit(event) {
     event.preventDefault();
-    onSearch(keywordDraft, locationDraft, experience, jobType);
-  }
-
-  function handleExperienceChange(event) {
-    const nextExperience = event.target.value;
-    onSearch(keywordDraft, locationDraft, nextExperience, jobType);
-  }
-
-  function handleJobTypeChange(event) {
-    const nextJobType = event.target.value;
-    onSearch(keywordDraft, locationDraft, experience, nextJobType);
-  }
-
-  function handleClearKeyword() {
-    setKeywordDraft("");
-    onSearch("", locationDraft, experience, jobType);
-  }
-
-  function handleClearLocation() {
-    setLocationDraft("");
-    onSearch(keywordDraft, "", experience, jobType);
-  }
-
-  function handleClearAll() {
-    setKeywordDraft("");
-    setLocationDraft("");
-    onClear();
+    onSearch(keywordDraft, locationDraft);
   }
 
   return (
-    <div className="jobs-search-container">
-      <form className="jobs-search-panel" onSubmit={handleSubmit}>
-        <div className="search-field">
+    <form className="jobs-search-card" onSubmit={handleSubmit}>
+      <div className="search-input-box">
+        <span className="search-box-icon" aria-hidden="true">
+          <SearchIcon size={18} />
+        </span>
+        <div className="search-box-text">
           <label htmlFor="keyword">Job title</label>
           <input
             id="keyword"
             type="search"
-            placeholder="e.g. React Developer"
+            placeholder="e.g. React Developer, Software Engineer"
             value={keywordDraft}
             onChange={(event) => setKeywordDraft(event.target.value)}
           />
         </div>
+      </div>
 
-        <div className="search-field">
+      <div className="search-input-box">
+        <span className="search-box-icon" aria-hidden="true">
+          <LocationIcon />
+        </span>
+        <div className="search-box-text">
           <label htmlFor="location">Location</label>
           <input
             id="location"
             type="search"
-            placeholder="e.g. Hyderabad"
+            placeholder="e.g. Hyderabad, Bengaluru, Mumbai"
             value={locationDraft}
             onChange={(event) => setLocationDraft(event.target.value)}
           />
         </div>
+      </div>
 
-        <button className="jobs-search-button" type="submit">
-          Search Jobs
-        </button>
+      <button className="jobs-search-button" type="submit">
+        <SearchIcon size={18} />
+        Search Jobs
+      </button>
+    </form>
+  );
+}
+
+function FiltersBar({ experience, jobType, onFilterChange, onClear }) {
+  return (
+    <div className="jobs-filters-card">
+      <div className="filters-card-header">
+        <span className="filters-header-icon" aria-hidden="true">
+          <FilterSlidersIcon />
+        </span>
+        <h3>Filters</h3>
+      </div>
+
+      <div className="filters-card-controls">
+        <div className="filter-field">
+          <label htmlFor="filter-experience">Experience</label>
+          <select
+            id="filter-experience"
+            value={experience}
+            onChange={(event) =>
+              onFilterChange("experience", event.target.value)
+            }
+          >
+            <option value="all">Any experience</option>
+            <option value="0">Entry level (0 years)</option>
+            <option value="1">Up to 1 year</option>
+            <option value="2">Up to 2 years</option>
+            <option value="3">Up to 3 years</option>
+            <option value="5">Up to 5 years</option>
+          </select>
+        </div>
+
+        <div className="filter-field">
+          <label htmlFor="filter-jobtype">Job type</label>
+          <select
+            id="filter-jobtype"
+            value={jobType}
+            onChange={(event) => onFilterChange("type", event.target.value)}
+          >
+            <option value="all">All job types</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+            <option value="Contract">Contract</option>
+          </select>
+        </div>
 
         <button
           type="button"
-          className={`jobs-filter-toggle ${showFilters || activeFilterCount > 0 ? "active" : ""}`}
-          onClick={() => setShowFilters((previous) => !previous)}
-          aria-expanded={showFilters}
-          title="Toggle filter options"
+          className="filters-clear-button"
+          onClick={onClear}
         >
-          <span className="filter-icon" aria-hidden="true">
-            ⚙
-          </span>
-          Filters
-          {activeFilterCount > 0 && (
-            <span className="filter-badge">{activeFilterCount}</span>
-          )}
-          <span className="filter-chevron" aria-hidden="true">
-            {showFilters ? "▲" : "▼"}
-          </span>
+          <RefreshIcon />
+          Clear Filters
         </button>
-      </form>
-
-      {/* Expandable filter options directly below the search bar */}
-      {showFilters && (
-        <div className="jobs-filter-drawer">
-          <div className="filter-drawer-header">
-            <h4>Filter options</h4>
-            <span className="filter-drawer-hint">
-              Refine listings by required experience and job type
-            </span>
-          </div>
-
-          <div className="filter-drawer-controls">
-            <div className="filter-control">
-              <label htmlFor="filter-experience">Experience</label>
-              <select
-                id="filter-experience"
-                value={experience}
-                onChange={handleExperienceChange}
-              >
-                <option value="all">Any experience</option>
-                <option value="0">Entry level (0 years)</option>
-                <option value="1">Up to 1 year</option>
-                <option value="2">Up to 2 years</option>
-                <option value="3">Up to 3 years</option>
-                <option value="5">Up to 5 years</option>
-              </select>
-            </div>
-
-            <div className="filter-control">
-              <label htmlFor="filter-jobtype">Job type</label>
-              <select
-                id="filter-jobtype"
-                value={jobType}
-                onChange={handleJobTypeChange}
-              >
-                <option value="all">All job types</option>
-                <option value="Full-time">Full-time</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Internship">Internship</option>
-                <option value="Contract">Contract</option>
-              </select>
-            </div>
-
-            {activeFilterCount > 0 && (
-              <button
-                type="button"
-                className="clear-drawer-filters"
-                onClick={() => {
-                  onSearch(keywordDraft, locationDraft, "all", "all");
-                }}
-              >
-                Clear filters
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Removable active filter tags */}
-      {(keyword || location || activeFilterCount > 0) && (
-        <div className="active-filters-bar">
-          <span className="active-filters-label">Active filters:</span>
-          {keyword && (
-            <span className="filter-pill">
-              Title: {keyword}
-              <button
-                type="button"
-                onClick={handleClearKeyword}
-                aria-label="Remove title filter"
-              >
-                ×
-              </button>
-            </span>
-          )}
-          {location && (
-            <span className="filter-pill">
-              Location: {location}
-              <button
-                type="button"
-                onClick={handleClearLocation}
-                aria-label="Remove location filter"
-              >
-                ×
-              </button>
-            </span>
-          )}
-          {experience !== "all" && (
-            <span className="filter-pill">
-              Exp: {experience === "0" ? "Entry level" : `≤ ${experience} yrs`}
-              <button
-                type="button"
-                onClick={() =>
-                  onSearch(keywordDraft, locationDraft, "all", jobType)
-                }
-                aria-label="Remove experience filter"
-              >
-                ×
-              </button>
-            </span>
-          )}
-          {jobType !== "all" && (
-            <span className="filter-pill">
-              Type: {jobType}
-              <button
-                type="button"
-                onClick={() =>
-                  onSearch(keywordDraft, locationDraft, experience, "all")
-                }
-                aria-label="Remove job type filter"
-              >
-                ×
-              </button>
-            </span>
-          )}
-          <button
-            type="button"
-            className="clear-all-pills"
-            onClick={handleClearAll}
-          >
-            Clear all
-          </button>
-        </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -293,20 +282,33 @@ function Jobs() {
     });
   }, [experience, jobType, jobs, keyword, location]);
 
-  function applySearch(keywordDraft, locationDraft, nextExperience, nextJobType) {
-    const nextParams = new URLSearchParams();
+  function applySearch(keywordDraft, locationDraft) {
+    const nextParams = new URLSearchParams(searchParams);
     const nextKeyword = (keywordDraft || "").trim();
     const nextLocation = (locationDraft || "").trim();
 
-    if (nextKeyword) nextParams.set("q", nextKeyword);
-    if (nextLocation) nextParams.set("location", nextLocation);
-    if (nextExperience && nextExperience !== "all") {
-      nextParams.set("experience", nextExperience);
-    }
-    if (nextJobType && nextJobType !== "all") {
-      nextParams.set("type", nextJobType);
+    if (nextKeyword) {
+      nextParams.set("q", nextKeyword);
+    } else {
+      nextParams.delete("q");
     }
 
+    if (nextLocation) {
+      nextParams.set("location", nextLocation);
+    } else {
+      nextParams.delete("location");
+    }
+
+    setSearchParams(nextParams);
+  }
+
+  function updateFilter(name, value) {
+    const nextParams = new URLSearchParams(searchParams);
+    if (value === "all") {
+      nextParams.delete(name);
+    } else {
+      nextParams.set(name, value);
+    }
     setSearchParams(nextParams);
   }
 
@@ -319,27 +321,36 @@ function Jobs() {
       <Navbar />
 
       <main className="jobs-main">
+        {/* Header Section matching mockup */}
         <section className="jobs-heading">
-          <span className="jobs-eyebrow">YOUR NEXT CHAPTER</span>
-          <h1>
-            Find your <span>perfect job.</span>
-          </h1>
+          <div className="jobs-eyebrow-badge">
+            <BriefcaseIcon />
+            <span>Find Jobs</span>
+          </div>
+          <h1>Search Your Next Opportunity</h1>
           <p>
-            Explore opportunities that match your skills, experience, and
-            ambitions.
+            Explore thousands of jobs and take the next step in your career.
           </p>
         </section>
 
-        <SearchBar
-          key={`${keyword}\u0000${location}\u0000${experience}\u0000${jobType}`}
-          keyword={keyword}
-          location={location}
-          experience={experience}
-          jobType={jobType}
-          onSearch={applySearch}
-          onClear={clearFilters}
-        />
+        {/* Stacked Search & Filter Cards matching mockup */}
+        <div className="jobs-search-section">
+          <SearchBar
+            key={`${keyword}\u0000${location}`}
+            keyword={keyword}
+            location={location}
+            onSearch={applySearch}
+          />
 
+          <FiltersBar
+            experience={experience}
+            jobType={jobType}
+            onFilterChange={updateFilter}
+            onClear={clearFilters}
+          />
+        </div>
+
+        {/* Results Section with 3 Cards per Line */}
         <section className="jobs-results">
           <div className="jobs-list-section" aria-live="polite">
             <div className="jobs-list-heading">
