@@ -2,82 +2,73 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import JobForm from "../components/recruiter/JobForm";
+import { createJob } from "../services/api";
+import "./RecruiterDashboard.css";
 
 function AddJob() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (formData) => {
+  const handleSubmit = async (formData) => {
     setIsSubmitting(true);
+    setError("");
 
-    // Temporary preview: backend/API integration is still pending.
-    console.log("Job details:", formData);
+    try {
+      const skills = Array.isArray(formData.skills)
+        ? formData.skills
+        : formData.skills
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter(Boolean);
 
-    alert("Job form submitted! Check the console for the entered details.");
-    setIsSubmitting(false);
+      const jobPayload = {
+        title: formData.title.trim(),
+        company: formData.company.trim(),
+        location: formData.location.trim(),
+        type: formData.jobType,
+        jobType: formData.jobType,
+        minExperience: Number(formData.minExperience) || 0,
+        maxExperience: Number(formData.maxExperience) || 0,
+        minSalary: Number(formData.minSalary) || 0,
+        maxSalary: Number(formData.maxSalary) || 0,
+        experience: Number(formData.minExperience) || 0,
+        salary: formData.minSalary || "",
+        skills,
+        description: formData.description.trim(),
+        postedDate: new Date().toISOString().split("T")[0],
+      };
+
+      await createJob(jobPayload);
+      navigate("/manage-jobs");
+    } catch (err) {
+      setError(err.message || "Unable to post the job. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <main style={styles.page}>
-      <button
-        type="button"
-        onClick={() => navigate("/")}
-        style={styles.backButton}
-      >
-        Back
+    <main style={{ minHeight: "100vh", padding: "32px 20px 60px" }}>
+      <button type="button" onClick={() => navigate("/recruiter-dashboard")}>
+        ← Back to Dashboard
       </button>
 
-      <header style={styles.header}>
-        <p style={styles.eyebrow}></p>
-        <h1 style={styles.title}>Post a New Job</h1>
-        <p style={styles.description}>
-          Fill in the job details below.
-        </p>
+      <header style={{ maxWidth: 850, margin: "24px auto" }}>
+        <h1>Post a New Job</h1>
+        <p>Fill in the job details below.</p>
       </header>
+
+      {error && <p role="alert">{error}</p>}
 
       <JobForm
         onSubmit={handleSubmit}
-        onCancel={() => navigate("/")}
+        onCancel={() => navigate("/recruiter-dashboard")}
       />
+
+      {isSubmitting && <p role="status">Publishing job…</p>}
     </main>
   );
 }
-
-const styles = {
-  page: {
-    minHeight: "100vh",
-    padding: "32px 20px 60px",
-    background: "#f5f7fb",
-    fontFamily: "Arial, sans-serif",
-    color: "#172033",
-  },
-  backButton: {
-    border: "none",
-    background: "transparent",
-    color: "#315bea",
-    fontSize: "15px",
-    fontWeight: 600,
-    cursor: "pointer",
-    marginBottom: "24px",
-  },
-  header: {
-    maxWidth: "850px",
-    margin: "0 auto 28px",
-  },
-  eyebrow: {
-    color: "#315bea",
-    fontSize: "12px",
-    fontWeight: 700,
-    letterSpacing: "1.5px",
-  },
-  title: {
-    fontSize: "32px",
-    margin: "10px 0",
-  },
-  description: {
-    color: "#6b7280",
-    lineHeight: 1.6,
-  },
-};
 
 export default AddJob;

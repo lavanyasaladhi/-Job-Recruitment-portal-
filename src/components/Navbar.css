@@ -1,0 +1,196 @@
+/* ========================================
+   CAREERCONNECT - NAVBAR STYLES
+======================================== */
+
+.navbar {
+  height: var(--navbar-height, 74px);
+  max-height: var(--navbar-height, 74px);
+  padding: 0 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-sizing: border-box;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 85%), rgb(255 255 255 / 85%)),
+    url("../assets/navbar-background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(32, 56, 50, 0.05);
+}
+
+/* Logo and brand name */
+.navbar-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-deep);
+  font-size: 21px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Navigation links */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navbar-links a,
+.login-link {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover,
+.navbar-links a.active,
+.login-link:hover {
+  color: var(--color-primary);
+}
+
+.navbar-links a.active {
+  position: relative;
+}
+
+.navbar-links a.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -9px;
+  left: 0;
+  height: 2px;
+  background: var(--color-primary);
+  content: "";
+}
+
+/* Right-side actions */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.register-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 18px;
+  border: 1px solid var(--color-primary);
+  border-radius: 8px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.register-button:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Mobile menu toggle */
+.menu-toggle {
+  display: none;
+  border: none;
+  background: transparent;
+  color: var(--color-deep);
+  font-size: 25px;
+  cursor: pointer;
+}
+
+/* Keyboard accessibility */
+.navbar a:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 4px;
+}
+
+/* ========================================
+   TABLET AND MOBILE NAVBAR
+======================================== */
+
+@media (max-width: 760px) {
+  .navbar {
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 15px 5%;
+  }
+
+  .menu-toggle {
+    display: block;
+    margin-left: auto;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 0;
+  }
+
+  /* Show links when the menu is open */
+  .navbar-links.menu-open {
+    display: flex;
+  }
+
+  .navbar-links a {
+    padding: 12px 0;
+  }
+
+  /* Hide actions until the mobile menu opens */
+  .navbar-actions {
+    display: none;
+    flex-basis: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .navbar:has(.menu-open) .navbar-actions {
+    display: flex;
+  }
+
+  .login-link {
+    padding: 8px 0;
+  }
+
+  .register-button {
+    width: 100%;
+    text-align: center;
+  }
+}

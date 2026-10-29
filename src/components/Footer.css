@@ -1,0 +1,215 @@
+/* ========================================
+   CAREERCONNECT - FOOTER STYLES
+======================================== */
+
+.site-footer {
+  margin-top: auto;
+  background: #1f271b;
+  color: #d8ded2;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  scroll-snap-align: end;
+}
+
+.footer-top {
+  max-width: var(--container-width, 1240px);
+  margin: 0 auto;
+  padding: 64px 24px 40px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.3fr;
+  gap: 40px;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background-color: var(--color-primary, #636b2f);
+  color: #ffffff;
+}
+
+.footer-tagline {
+  color: #a4ae9c;
+  line-height: 1.6;
+  max-width: 320px;
+}
+
+.footer-stats-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  font-size: 12px;
+  color: #bac095;
+  width: fit-content;
+}
+
+.footer-stats-badge::before {
+  content: "●";
+  color: #a8d58c;
+  font-size: 10px;
+}
+
+.footer-col h4 {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: -0.2px;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer-links a {
+  color: #a4ae9c;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
+}
+
+.footer-links a:hover {
+  color: #e2f0d9;
+  transform: translateX(3px);
+}
+
+.footer-newsletter p {
+  color: #a4ae9c;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.footer-subscribe-form {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.footer-subscribe-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.footer-subscribe-form input::placeholder {
+  color: #7b8574;
+}
+
+.footer-subscribe-form input:focus {
+  border-color: #bac095;
+}
+
+.footer-subscribe-form button {
+  padding: 11px 18px;
+  background: var(--color-primary, #636b2f);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.footer-subscribe-form button:hover {
+  background: var(--color-primary-hover, #505725);
+}
+
+.newsletter-success {
+  margin-top: 8px;
+  color: #a8d58c;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  max-width: var(--container-width, 1240px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #7f8a77;
+  font-size: 13px;
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-bottom-links a {
+  color: #7f8a77;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: #d8ded2;
+}
+
+@media (max-width: 900px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    padding-top: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 20px 28px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .footer-bottom-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+}

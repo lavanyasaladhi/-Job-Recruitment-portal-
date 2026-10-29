@@ -1,35 +1,6 @@
- 
-:root {
-  font-family: Arial, sans-serif;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  color: #3D4127;
-  background: #D4DE95;
-
-  font-weight: 400;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body,
-#root {
-  width: 100%;
-  min-width: 320px;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100vh;
-}
-
+/* Global App CSS */
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
