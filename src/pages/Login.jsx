@@ -6,8 +6,6 @@ import {
   LockKeyhole,
   Mail,
   User,
-  UserCheck,
-  Building,
 } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import "./Login.css";
@@ -28,7 +26,6 @@ function Login({ initialMode = "signin" }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("candidate"); // 'candidate' | 'recruiter'
   const [showPassword, setShowPassword] = useState(false);
   const [notice, setNotice] = useState(null);
 
@@ -52,7 +49,7 @@ function Login({ initialMode = "signin" }) {
         id: Date.now(),
         name: name.trim(),
         email: email.trim(),
-        role,
+        role: "candidate",
         registeredAt: new Date().toISOString(),
       };
 
@@ -64,13 +61,8 @@ function Login({ initialMode = "signin" }) {
         text: `Registration successful for ${name}! Entering your portal…`,
       });
 
-      // Switch to dashboard or jobs
       setTimeout(() => {
-        if (role === "recruiter") {
-          navigate("/recruiter-dashboard");
-        } else {
-          navigate("/jobs");
-        }
+        navigate("/jobs");
       }, 1200);
     } else {
       // Sign-in handler
@@ -80,9 +72,10 @@ function Login({ initialMode = "signin" }) {
       }
 
       const signedInUser = {
+        id: Date.now(),
         name: email.split("@")[0],
         email: email.trim(),
-        role,
+        role: "candidate",
       };
 
       login(signedInUser);
@@ -93,11 +86,7 @@ function Login({ initialMode = "signin" }) {
       });
 
       setTimeout(() => {
-        if (role === "recruiter") {
-          navigate("/recruiter-dashboard");
-        } else {
-          navigate("/jobs");
-        }
+        navigate("/jobs");
       }, 1000);
     }
   }
@@ -139,12 +128,12 @@ function Login({ initialMode = "signin" }) {
 
           <header className="portal-login-heading">
             <p className="portal-eyebrow">
-              {isRegister ? "CREATE AN ACCOUNT" : "JOB RECRUITMENT PORTAL"}
+              {isRegister ? "CREATE CANDIDATE ACCOUNT" : "CANDIDATE PORTAL"}
             </p>
             <h2>
               {isRegister ? (
                 <>
-                  Register as <span>New User</span>
+                  Register as <span>Candidate</span>
                 </>
               ) : (
                 <>
@@ -155,7 +144,7 @@ function Login({ initialMode = "signin" }) {
             <p className="portal-subtitle">
               {isRegister
                 ? "Create your profile to search and apply for jobs"
-                : "Sign in to your Job Recruitment Portal"}
+                : "Sign in to track your job applications"}
             </p>
           </header>
 
@@ -233,35 +222,6 @@ function Login({ initialMode = "signin" }) {
                   ) : (
                     <Eye size={19} aria-hidden="true" />
                   )}
-                </button>
-              </div>
-            </div>
-
-            {/* Role Selection */}
-            <div className="portal-role-group">
-              <span className="portal-role-label">
-                {isRegister ? "Register as:" : "Sign in as:"}
-              </span>
-              <div className="portal-role-options">
-                <button
-                  type="button"
-                  className={`portal-role-option ${
-                    role === "candidate" ? "selected" : ""
-                  }`}
-                  onClick={() => setRole("candidate")}
-                >
-                  <UserCheck size={16} />
-                  <span>Candidate</span>
-                </button>
-                <button
-                  type="button"
-                  className={`portal-role-option ${
-                    role === "recruiter" ? "selected" : ""
-                  }`}
-                  onClick={() => setRole("recruiter")}
-                >
-                  <Building size={16} />
-                  <span>Recruiter</span>
                 </button>
               </div>
             </div>

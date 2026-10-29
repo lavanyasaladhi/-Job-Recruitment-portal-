@@ -25,7 +25,7 @@ function JobDetails() {
   const [applySuccess, setApplySuccess] = useState(false);
   const [applyError, setApplyError] = useState("");
 
-  // Application form fields (prefilled from logged in user if available)
+  // Application form fields (prefilled from logged in user)
   const [candidateName, setCandidateName] = useState(user?.name || "");
   const [candidateEmail, setCandidateEmail] = useState(user?.email || "");
   const [candidatePhone, setCandidatePhone] = useState(user?.phone || "");
@@ -35,6 +35,18 @@ function JobDetails() {
   const [candidateResume, setCandidateResume] = useState(
     user?.resume || "my_resume.pdf"
   );
+
+  // Pre-fill form when user clicks Apply
+  function handleOpenApplyForm() {
+    if (user) {
+      setCandidateName(user.name || "");
+      setCandidateEmail(user.email || "");
+      setCandidatePhone(user.phone || "");
+      setCandidateExperience(user.experience || 0);
+      setCandidateResume(user.resume || "my_resume.pdf");
+    }
+    setShowApplyForm(true);
+  }
 
   // Load job details and check if already applied
   useEffect(() => {
@@ -49,18 +61,19 @@ function JobDetails() {
         const jobData = await getJobById(jobId, { signal: controller.signal });
         setJob(jobData);
 
-        // Check if user has already applied for this job
-        const allApplications = await getApplications({ signal: controller.signal });
-        const userEmail = user?.email || candidateEmail;
-        const matched = allApplications.find(
-          (app) =>
-            String(app.jobId) === String(jobId) &&
-            app.candidateEmail?.toLowerCase() === userEmail.toLowerCase()
-        );
+        // Check if logged-in user has already applied for this job
+        if (user?.email) {
+          const allApplications = await getApplications({ signal: controller.signal });
+          const matched = allApplications.find(
+            (app) =>
+              String(app.jobId) === String(jobId) &&
+              app.candidateEmail?.toLowerCase() === user.email.toLowerCase()
+          );
 
-        if (matched) {
-          setAlreadyApplied(true);
-          setExistingApplication(matched);
+          if (matched) {
+            setAlreadyApplied(true);
+            setExistingApplication(matched);
+          }
         }
       } catch (loadError) {
         if (!controller.signal.aborted) {
@@ -75,12 +88,17 @@ function JobDetails() {
 
     loadJobAndApplication();
     return () => controller.abort();
-  }, [jobId, retryKey, user, candidateEmail]);
+  }, [jobId, retryKey, user]);
 
   // Handle application form submission
   async function handleApplySubmit(event) {
     event.preventDefault();
     setApplyError("");
+
+    if (!user) {
+      setApplyError("You must be signed in to submit an application.");
+      return;
+    }
 
     // Simple validation
     if (!candidateName.trim() || !candidateEmail.trim()) {
@@ -237,19 +255,50 @@ function JobDetails() {
                 borderTop: "1px solid var(--color-border)",
               }}
             >
-              {!alreadyApplied && !showApplyForm && (
+              {/* If user is not logged in, prompt them to sign in to apply */}
+              {!user ? (
+                <div
+                  style={{
+                    backgroundColor: "var(--color-surface)",
+                    border: "1px solid var(--color-border)",
+                    borderRadius: "12px",
+                    padding: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    gap: "16px",
+                  }}
+                >
+                  <div>
+                    <h3 style={{ margin: "0 0 6px", color: "var(--color-deep)", fontSize: "18px" }}>
+                      Interested in this position?
+                    </h3>
+                    <p style={{ margin: 0, color: "var(--color-text-muted)", fontSize: "14px" }}>
+                      Sign in with your candidate account to submit your application and track its progress.
+                    </p>
+                  </div>
+                  <Link
+                    to="/login"
+                    className="portal-primary-btn"
+                    style={{ padding: "11px 22px", fontSize: "14px" }}
+                  >
+                    Sign In to Apply →
+                  </Link>
+                </div>
+              ) : !alreadyApplied && !showApplyForm ? (
                 <button
                   type="button"
                   className="portal-primary-btn"
                   style={{ padding: "12px 28px", fontSize: "15px" }}
-                  onClick={() => setShowApplyForm(true)}
+                  onClick={handleOpenApplyForm}
                 >
                   Apply for this Position →
                 </button>
-              )}
+              ) : null}
 
-              {/* Application Form */}
-              {showApplyForm && !alreadyApplied && (
+              {/* Application Form (Only for logged-in candidates who haven't applied yet) */}
+              {user && showApplyForm && !alreadyApplied && (
                 <div
                   style={{
                     backgroundColor: "var(--color-surface)",

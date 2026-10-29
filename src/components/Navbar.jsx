@@ -1,22 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Briefcase, Menu, X, ArrowLeftRight, LogOut } from "lucide-react";
+import { Briefcase, Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import "./Navbar.css";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
-  const { user, logout, switchRole } = useAuth();
-
-  const isRecruiter = user?.role === "recruiter";
-
-  // Toggle role between candidate and recruiter
-  function handleToggleRole() {
-    const nextRole = isRecruiter ? "candidate" : "recruiter";
-    switchRole(nextRole);
-    setMenuOpen(false);
-  }
+  const { user, logout } = useAuth();
 
   return (
     <header className="navbar">
@@ -57,94 +48,41 @@ function Navbar() {
           Find Jobs
         </Link>
 
-        {/* Candidate-specific navigation links */}
-        {!isRecruiter && (
-          <>
-            <Link
-              to="/my-applications"
-              className={pathname === "/my-applications" ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            >
-              My Applications
-            </Link>
-            <Link
-              to="/candidate-register"
-              className={pathname === "/candidate-register" ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            >
-              Register Candidate
-            </Link>
-          </>
-        )}
-
-        {/* Recruiter-specific navigation links */}
-        {isRecruiter && (
-          <>
-            <Link
-              to="/recruiter-dashboard"
-              className={pathname === "/recruiter-dashboard" ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/manage-jobs"
-              className={pathname === "/manage-jobs" ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            >
-              Manage Jobs
-            </Link>
-            <Link
-              to="/applications"
-              className={pathname === "/applications" ? "active" : ""}
-              onClick={() => setMenuOpen(false)}
-            >
-              Applications
-            </Link>
-          </>
+        {/* Protected links - Only visible after login */}
+        {user && (
+          <Link
+            to="/my-applications"
+            className={pathname === "/my-applications" ? "active" : ""}
+            onClick={() => setMenuOpen(false)}
+          >
+            My Applications
+          </Link>
         )}
       </nav>
 
       {/* Right Side Actions */}
       <div className="navbar-actions">
-        {/* Role Switcher Pill - Helps with testing both roles */}
-        <button
-          type="button"
-          onClick={handleToggleRole}
-          className="role-toggle-pill"
-          title={`Click to switch to ${isRecruiter ? "Candidate" : "Recruiter"} role`}
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
-            padding: "6px 12px",
-            borderRadius: "20px",
-            border: "1px solid var(--color-border)",
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            fontSize: "12px",
-            fontWeight: 600,
-            color: isRecruiter ? "#1e3a8a" : "#166534",
-            cursor: "pointer",
-          }}
-        >
-          <ArrowLeftRight size={14} />
-          <span>Role: {isRecruiter ? "Recruiter" : "Candidate"}</span>
-        </button>
-
-        {/* User state buttons */}
         {user ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          // Shown when candidate is logged in
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <span
               style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
                 fontSize: "13px",
                 fontWeight: 600,
                 color: "var(--color-deep)",
-                display: "none",
+                background: "rgba(255, 255, 255, 0.8)",
+                padding: "6px 12px",
+                borderRadius: "20px",
+                border: "1px solid var(--color-border)",
               }}
-              className="navbar-username"
             >
+              <User size={14} color="var(--color-primary)" />
               {user.name}
             </span>
+
             <button
               type="button"
               onClick={logout}
@@ -156,6 +94,7 @@ function Navbar() {
                 alignItems: "center",
                 gap: "4px",
                 cursor: "pointer",
+                padding: "6px 8px",
               }}
               title="Sign Out"
             >
@@ -164,32 +103,24 @@ function Navbar() {
             </button>
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="login-link"
-            onClick={() => setMenuOpen(false)}
-          >
-            Sign In
-          </Link>
-        )}
+          // Shown when user is not logged in
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+            <Link
+              to="/login"
+              className="login-link"
+              onClick={() => setMenuOpen(false)}
+            >
+              Sign In
+            </Link>
 
-        {/* Primary CTA button */}
-        {isRecruiter ? (
-          <Link
-            to="/add-job"
-            className="register-button"
-            onClick={() => setMenuOpen(false)}
-          >
-            + Post Job
-          </Link>
-        ) : (
-          <Link
-            to="/jobs"
-            className="register-button"
-            onClick={() => setMenuOpen(false)}
-          >
-            Explore Jobs
-          </Link>
+            <Link
+              to="/jobs"
+              className="register-button"
+              onClick={() => setMenuOpen(false)}
+            >
+              Explore Jobs
+            </Link>
+          </div>
         )}
       </div>
     </header>

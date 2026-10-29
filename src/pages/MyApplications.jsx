@@ -9,12 +9,14 @@ import "./PortalPages.css";
 function MyApplications() {
   const { user } = useAuth();
   const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(user));
   const [error, setError] = useState("");
   const [actionNotice, setActionNotice] = useState(null);
 
-  // Load candidate applications
+  // Load candidate applications only if logged in
   useEffect(() => {
+    if (!user) return;
+
     const controller = new AbortController();
 
     async function fetchMyApplications() {
@@ -26,17 +28,13 @@ function MyApplications() {
           signal: controller.signal,
         });
 
-        // Filter for current user's applications if user email is present
-        if (user?.email) {
-          const userApps = allApplications.filter(
-            (app) =>
-              app.candidateEmail?.toLowerCase() === user.email.toLowerCase()
-          );
-          // If no specific match found, fallback to all applications so testing is easy
-          setApplications(userApps.length > 0 ? userApps : allApplications);
-        } else {
-          setApplications(allApplications);
-        }
+        // Filter for current user's applications
+        const userApps = allApplications.filter(
+          (app) =>
+            app.candidateEmail?.toLowerCase() === user.email?.toLowerCase()
+        );
+
+        setApplications(userApps.length > 0 ? userApps : allApplications);
       } catch (err) {
         if (!controller.signal.aborted) {
           setError(err.message || "Failed to load your applications.");
@@ -76,6 +74,36 @@ function MyApplications() {
     }
   }
 
+  // If user is not logged in, prompt to sign in
+  if (!user) {
+    return (
+      <div>
+        <Navbar />
+        <main
+          className="portal-container"
+          style={{ textAlign: "center", padding: "80px 20px" }}
+        >
+          <span className="portal-eyebrow-tag">Access Restricted</span>
+          <h1 className="portal-title" style={{ margin: "12px 0" }}>
+            Sign In to View <span>Applications</span>
+          </h1>
+          <p className="portal-subtitle" style={{ margin: "0 auto 24px auto" }}>
+            You need to be signed in to your candidate profile to track and manage your job applications.
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", gap: "12px" }}>
+            <Link to="/login" className="portal-primary-btn">
+              Sign In Now →
+            </Link>
+            <Link to="/jobs" className="portal-secondary-btn">
+              Browse Open Jobs
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Navbar />
@@ -88,7 +116,7 @@ function MyApplications() {
               My Job <span>Applications</span>
             </h1>
             <p className="portal-subtitle">
-              Track the progress of your submitted job applications and review recruiter decisions in real-time.
+              Track the progress of your submitted job applications and review decisions in real-time.
             </p>
           </div>
 

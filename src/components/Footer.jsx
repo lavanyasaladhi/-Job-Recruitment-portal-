@@ -36,7 +36,7 @@ function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>For Candidates</h4>
+          <h4>Candidate Portal</h4>
           <ul className="footer-links">
             <li>
               <Link to="/jobs">Explore All Jobs</Link>
@@ -45,7 +45,7 @@ function Footer() {
               <Link to="/jobs?type=Remote">Remote Positions</Link>
             </li>
             <li>
-              <Link to="/candidate-register">Candidate Registration</Link>
+              <Link to="/register">Candidate Registration</Link>
             </li>
             <li>
               <Link to="/my-applications">My Applications</Link>
@@ -57,22 +57,22 @@ function Footer() {
         </div>
 
         <div className="footer-col">
-          <h4>For Recruiters</h4>
+          <h4>Explore Careers</h4>
           <ul className="footer-links">
             <li>
-              <Link to="/recruiter-dashboard">Recruiter Dashboard</Link>
+              <Link to="/jobs">Search Positions</Link>
             </li>
             <li>
-              <Link to="/add-job">Post a Vacancy</Link>
+              <Link to="/jobs?experience=0">Fresher Opportunities</Link>
             </li>
             <li>
-              <Link to="/manage-jobs">Manage Jobs</Link>
+              <Link to="/jobs?type=Full-time">Full-time Roles</Link>
             </li>
             <li>
-              <Link to="/applications">Review Applications</Link>
+              <Link to="/jobs?type=Hybrid">Hybrid Positions</Link>
             </li>
             <li>
-              <Link to="/login">Recruiter Portal</Link>
+              <Link to="/login">Create Account</Link>
             </li>
           </ul>
         </div>
@@ -107,8 +107,8 @@ function Footer() {
         <div className="footer-bottom-links">
           <Link to="/">Home</Link>
           <Link to="/jobs">Jobs</Link>
-          <Link to="/recruiter-dashboard">Recruiter</Link>
-          <Link to="/candidate-register">Register</Link>
+          <Link to="/login">Sign In</Link>
+          <Link to="/register">Register</Link>
         </div>
       </div>
     </footer>
