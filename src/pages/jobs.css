@@ -6,12 +6,12 @@
 .jobs-main {
   width: min(1280px, calc(100% - clamp(32px, 5vw, 80px)));
   margin: 0 auto;
-  padding: clamp(32px, 5vh, 52px) 0 clamp(48px, 8vh, 80px);
+  padding: clamp(32px, 5vh, 48px) 0 clamp(48px, 8vh, 80px);
 }
 
 /* Header Section matching mockup */
 .jobs-heading {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
   text-align: left;
 }
 
@@ -21,17 +21,18 @@
   gap: 8px;
   margin-bottom: 10px;
   color: var(--color-primary);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
 }
 
 .jobs-eyebrow-badge svg {
   color: var(--color-primary);
+  flex-shrink: 0;
 }
 
 .jobs-heading h1 {
   color: var(--color-deep);
-  font-size: clamp(30px, 4vw, 44px);
+  font-size: clamp(30px, 4vw, 42px);
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -1.2px;
@@ -54,10 +55,10 @@
 /* Top Search Card */
 .jobs-search-card {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1.25fr) auto;
   align-items: center;
   gap: 16px;
-  padding: 18px 22px;
+  padding: 20px 24px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
@@ -69,9 +70,10 @@
   align-items: center;
   gap: 12px;
   min-width: 0;
-  padding: 9px 16px;
-  border: 1px solid #e1e3d9;
-  border-radius: var(--radius-md);
+  height: 58px;
+  padding: 8px 16px;
+  border: 1px solid #dce0d6;
+  border-radius: 12px;
   background: #ffffff;
   transition:
     border-color 0.2s ease,
@@ -86,14 +88,15 @@
 .search-box-icon {
   display: flex;
   align-items: center;
-  color: #636b2f;
+  justify-content: center;
+  color: #374151;
   flex-shrink: 0;
 }
 
 .search-box-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  justify-content: center;
   min-width: 0;
   flex: 1;
 }
@@ -102,7 +105,8 @@
   color: var(--color-deep);
   font-size: 12px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.2;
+  margin-bottom: 2px;
 }
 
 .search-box-text input {
@@ -112,7 +116,7 @@
   background: transparent;
   color: var(--color-text);
   font-size: 13.5px;
-  padding: 2px 0 0;
+  padding: 0;
 }
 
 .search-box-text input::placeholder {
@@ -125,10 +129,10 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 54px;
-  padding: 0 28px;
+  height: 58px;
+  padding: 0 32px;
   border: 1px solid var(--color-primary);
-  border-radius: var(--radius-md);
+  border-radius: 12px;
   background: var(--color-primary);
   color: #ffffff;
   font-size: 15px;
@@ -174,6 +178,7 @@
   color: var(--color-deep);
   font-size: 16px;
   font-weight: 750;
+  letter-spacing: -0.2px;
 }
 
 .filters-card-controls {
@@ -190,22 +195,28 @@
 }
 
 .filter-field label {
-  color: var(--color-deep);
+  color: #4b5563;
   font-size: 12.5px;
   font-weight: 650;
 }
 
 .filter-field select {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
-  border: 1px solid #e1e3d9;
-  border-radius: var(--radius-sm);
-  background: #ffffff;
+  height: 46px;
+  padding: 0 38px 0 14px;
+  border: 1px solid #dce0d6;
+  border-radius: 10px;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234b5563' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
   color: var(--color-text);
   font-size: 13.5px;
   cursor: pointer;
   outline: none;
+  appearance: none;
+  -webkit-appearance: none;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
@@ -221,13 +232,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
+  height: 46px;
   margin-left: auto;
-  padding: 0 20px;
-  border: 1px solid #8e9566;
-  border-radius: var(--radius-md);
+  padding: 0 22px;
+  border: 1.5px solid #8e9566;
+  border-radius: 10px;
   background: #ffffff;
-  color: var(--color-deep);
+  color: #3e471f;
   font-size: 13.5px;
   font-weight: 650;
   cursor: pointer;
@@ -236,6 +247,10 @@
     background-color 0.2s ease,
     border-color 0.2s ease,
     color 0.2s ease;
+}
+
+.filters-clear-button svg {
+  color: var(--color-primary);
 }
 
 .filters-clear-button:hover {

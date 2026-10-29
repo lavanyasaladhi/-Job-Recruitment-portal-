@@ -12,15 +12,11 @@ function BriefcaseIcon() {
       width="16"
       height="16"
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
+      fill="currentColor"
       aria-hidden="true"
     >
-      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      <path d="M20 7h-4V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM10 5h4v2h-4V5zm10 15H4V9h16v11z" />
+      <rect x="9" y="11" width="6" height="2" rx="1" />
     </svg>
   );
 }
@@ -128,7 +124,7 @@ function SearchBar({ keyword, location, onSearch }) {
           <label htmlFor="keyword">Job title</label>
           <input
             id="keyword"
-            type="search"
+            type="text"
             placeholder="e.g. React Developer, Software Engineer"
             value={keywordDraft}
             onChange={(event) => setKeywordDraft(event.target.value)}
@@ -144,7 +140,7 @@ function SearchBar({ keyword, location, onSearch }) {
           <label htmlFor="location">Location</label>
           <input
             id="location"
-            type="search"
+            type="text"
             placeholder="e.g. Hyderabad, Bengaluru, Mumbai"
             value={locationDraft}
             onChange={(event) => setLocationDraft(event.target.value)}
@@ -154,7 +150,7 @@ function SearchBar({ keyword, location, onSearch }) {
 
       <button className="jobs-search-button" type="submit">
         <SearchIcon size={18} />
-        Search Jobs
+        <span>Search Jobs</span>
       </button>
     </form>
   );
@@ -210,7 +206,7 @@ function FiltersBar({ experience, jobType, onFilterChange, onClear }) {
           onClick={onClear}
         >
           <RefreshIcon />
-          Clear Filters
+          <span>Clear Filters</span>
         </button>
       </div>
     </div>
