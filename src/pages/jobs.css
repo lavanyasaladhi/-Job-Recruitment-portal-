@@ -289,15 +289,6 @@
   font-size: 14px;
 }
 
-.job-count {
-  flex-shrink: 0;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: #f0f1e8;
-  color: var(--color-deep);
-  font-size: 13px;
-  font-weight: 650;
-}
 
 /* 3 Job cards in a single line on desktop */
 .jobs-grid {

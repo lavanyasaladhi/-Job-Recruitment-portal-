@@ -12,16 +12,21 @@
   gap: 24px;
   box-sizing: border-box;
   background-image:
-    linear-gradient(rgb(255 255 255 / 18%), rgb(255 255 255 / 18%)),
+    linear-gradient(rgb(255 255 255 / 85%), rgb(255 255 255 / 85%)),
     url("../assets/navbar-background.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
   position: sticky;
   top: 0;
-  z-index: 10;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(32, 56, 50, 0.05);
 }
 
 /* Logo and brand name */

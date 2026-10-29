@@ -354,12 +354,6 @@ function Jobs() {
                 <h2>Explore opportunities</h2>
                 <p>Find a role that fits your future.</p>
               </div>
-              {!loading && !error && (
-                <span className="job-count">
-                  {filteredJobs.length}{" "}
-                  {filteredJobs.length === 1 ? "job" : "jobs"}
-                </span>
-              )}
             </div>
 
             {loading ? (
