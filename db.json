@@ -1,7 +1,7 @@
 {
   "jobs": [
     {
-      "id": 1,
+      "id": "1",
       "title": "Senior React Developer",
       "company": "TechNova Labs",
       "location": "Hyderabad",
@@ -9,11 +9,16 @@
       "experience": 3,
       "salary": "14 - 18 LPA",
       "postedDate": "2026-10-24",
-      "skills": ["React", "JavaScript", "TypeScript", "Redux"],
+      "skills": [
+        "React",
+        "JavaScript",
+        "TypeScript",
+        "Redux"
+      ],
       "description": "We are seeking an experienced React Developer to build scalable, responsive web applications and modernize our client-facing portal."
     },
     {
-      "id": 2,
+      "id": "2",
       "title": "UI/UX Product Designer",
       "company": "CreativePulse Studio",
       "location": "Bengaluru",
@@ -21,11 +26,16 @@
       "experience": 2,
       "salary": "9 - 13 LPA",
       "postedDate": "2026-10-23",
-      "skills": ["Figma", "Design Systems", "Prototyping", "User Research"],
+      "skills": [
+        "Figma",
+        "Design Systems",
+        "Prototyping",
+        "User Research"
+      ],
       "description": "Collaborate closely with product managers and engineers to craft elegant, user-centric interfaces and interactive design prototypes."
     },
     {
-      "id": 3,
+      "id": "3",
       "title": "Full Stack Engineer (React & Node)",
       "company": "CloudScale Systems",
       "location": "Remote",
@@ -33,11 +43,17 @@
       "experience": 4,
       "salary": "16 - 22 LPA",
       "postedDate": "2026-10-22",
-      "skills": ["React", "Node.js", "Express", "PostgreSQL", "Docker"],
+      "skills": [
+        "React",
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "Docker"
+      ],
       "description": "Build high-throughput microservices and responsive React frontends for enterprise cloud analytics platforms."
     },
     {
-      "id": 4,
+      "id": "4",
       "title": "Junior Frontend Developer",
       "company": "InnoTech Solutions",
       "location": "Pune",
@@ -45,11 +61,16 @@
       "experience": 1,
       "salary": "6 - 9 LPA",
       "postedDate": "2026-10-21",
-      "skills": ["JavaScript", "React", "HTML5", "CSS3"],
+      "skills": [
+        "JavaScript",
+        "React",
+        "HTML5",
+        "CSS3"
+      ],
       "description": "Great opportunity for a junior developer eager to build production user interfaces and write maintainable modern JavaScript code."
     },
     {
-      "id": 5,
+      "id": "5",
       "title": "Data Analyst",
       "company": "InsightMetrics",
       "location": "Mumbai",
@@ -57,11 +78,16 @@
       "experience": 2,
       "salary": "8 - 11 LPA",
       "postedDate": "2026-10-20",
-      "skills": ["Python", "SQL", "Tableau", "Data Analysis"],
+      "skills": [
+        "Python",
+        "SQL",
+        "Tableau",
+        "Data Analysis"
+      ],
       "description": "Turn complex data into strategic business insights, build executive dashboards, and automate reporting pipelines."
     },
     {
-      "id": 6,
+      "id": "6",
       "title": "Cloud DevOps Engineer",
       "company": "InfraHub Technologies",
       "location": "Chennai",
@@ -69,11 +95,16 @@
       "experience": 3,
       "salary": "12 - 16 LPA",
       "postedDate": "2026-10-19",
-      "skills": ["AWS", "Kubernetes", "Terraform", "CI/CD"],
+      "skills": [
+        "AWS",
+        "Kubernetes",
+        "Terraform",
+        "CI/CD"
+      ],
       "description": "Manage containerized infrastructure, build resilient CI/CD deployment pipelines, and optimize cloud infrastructure security."
     },
     {
-      "id": 7,
+      "id": "7",
       "title": "Python Backend Developer",
       "company": "ApexCore Systems",
       "location": "Bengaluru",
@@ -81,11 +112,17 @@
       "experience": 2,
       "salary": "11 - 15 LPA",
       "postedDate": "2026-10-25",
-      "skills": ["Python", "Django", "FastAPI", "Redis", "PostgreSQL"],
+      "skills": [
+        "Python",
+        "Django",
+        "FastAPI",
+        "Redis",
+        "PostgreSQL"
+      ],
       "description": "Develop high-performance RESTful APIs, manage background task workers, and integrate relational and NoSQL databases."
     },
     {
-      "id": 8,
+      "id": "8",
       "title": "Mobile App Developer (Flutter)",
       "company": "AppCrafters Lab",
       "location": "Hyderabad",
@@ -93,11 +130,17 @@
       "experience": 3,
       "salary": "13 - 17 LPA",
       "postedDate": "2026-10-26",
-      "skills": ["Flutter", "Dart", "Firebase", "REST APIs", "State Management"],
+      "skills": [
+        "Flutter",
+        "Dart",
+        "Firebase",
+        "REST APIs",
+        "State Management"
+      ],
       "description": "Architect and publish cross-platform mobile apps for iOS and Android with smooth animations and responsive UI components."
     },
     {
-      "id": 9,
+      "id": "9",
       "title": "QA Automation Engineer",
       "company": "QualityFirst Software",
       "location": "Pune",
@@ -105,11 +148,17 @@
       "experience": 2,
       "salary": "8 - 12 LPA",
       "postedDate": "2026-10-24",
-      "skills": ["Selenium", "Cypress", "JavaScript", "JUnit", "Postman"],
+      "skills": [
+        "Selenium",
+        "Cypress",
+        "JavaScript",
+        "JUnit",
+        "Postman"
+      ],
       "description": "Create automated end-to-end test suites, conduct API regression testing, and maintain CI/CD test pipelines."
     },
     {
-      "id": 10,
+      "id": "10",
       "title": "Machine Learning Engineer",
       "company": "CognitiveAI Labs",
       "location": "Bengaluru",
@@ -117,11 +166,17 @@
       "experience": 3,
       "salary": "18 - 25 LPA",
       "postedDate": "2026-10-27",
-      "skills": ["Python", "PyTorch", "Scikit-Learn", "NLP", "MLOps"],
+      "skills": [
+        "Python",
+        "PyTorch",
+        "Scikit-Learn",
+        "NLP",
+        "MLOps"
+      ],
       "description": "Train and deploy machine learning models, optimize inference latency, and integrate generative AI pipelines into SaaS products."
     },
     {
-      "id": 11,
+      "id": "11",
       "title": "Junior Software Engineer (Fresher)",
       "company": "NextGen Digital",
       "location": "Hyderabad",
@@ -129,11 +184,17 @@
       "experience": 0,
       "salary": "4.5 - 6 LPA",
       "postedDate": "2026-10-28",
-      "skills": ["Java", "SQL", "Data Structures", "Algorithms", "Git"],
+      "skills": [
+        "Java",
+        "SQL",
+        "Data Structures",
+        "Algorithms",
+        "Git"
+      ],
       "description": "Entry-level engineering role for fresh graduates. Comprehensive training provided on enterprise software development and agile practices."
     },
     {
-      "id": 12,
+      "id": "12",
       "title": "Systems & Network Engineer",
       "company": "SecureNet Infrastructure",
       "location": "Delhi NCR",
@@ -141,11 +202,17 @@
       "experience": 2,
       "salary": "7 - 10 LPA",
       "postedDate": "2026-10-21",
-      "skills": ["Linux", "Networking", "Bash", "Firewalls", "VPN"],
+      "skills": [
+        "Linux",
+        "Networking",
+        "Bash",
+        "Firewalls",
+        "VPN"
+      ],
       "description": "Configure enterprise network infrastructure, oversee server monitoring, and troubleshoot Linux environment availability."
     },
     {
-      "id": 13,
+      "id": "13",
       "title": "Technical Product Manager",
       "company": "Horizon Ventures",
       "location": "Mumbai",
@@ -153,11 +220,17 @@
       "experience": 4,
       "salary": "18 - 24 LPA",
       "postedDate": "2026-10-23",
-      "skills": ["Product Strategy", "Agile", "User Stories", "Roadmapping", "Metrics"],
+      "skills": [
+        "Product Strategy",
+        "Agile",
+        "User Stories",
+        "Roadmapping",
+        "Metrics"
+      ],
       "description": "Lead cross-functional product sprints, define core feature requirements, and align engineering delivery with business goals."
     },
     {
-      "id": 14,
+      "id": "14",
       "title": "Technical Content Writer",
       "company": "ByteCraft Media",
       "location": "Remote",
@@ -165,11 +238,17 @@
       "experience": 1,
       "salary": "4 - 6 LPA",
       "postedDate": "2026-10-20",
-      "skills": ["Technical Writing", "SEO", "Developer Docs", "Markdown", "APIs"],
+      "skills": [
+        "Technical Writing",
+        "SEO",
+        "Developer Docs",
+        "Markdown",
+        "APIs"
+      ],
       "description": "Produce developer guides, API documentation, and insightful tech blog articles for software engineering audiences."
     },
     {
-      "id": 15,
+      "id": "15",
       "title": "Cybersecurity Analyst",
       "company": "SentinelShield Defense",
       "location": "Chennai",
@@ -177,11 +256,17 @@
       "experience": 3,
       "salary": "12 - 17 LPA",
       "postedDate": "2026-10-25",
-      "skills": ["Ethical Hacking", "SIEM", "Network Security", "OWASP", "Vulnerability Scanning"],
+      "skills": [
+        "Ethical Hacking",
+        "SIEM",
+        "Network Security",
+        "OWASP",
+        "Vulnerability Scanning"
+      ],
       "description": "Perform security audits, vulnerability assessments, and implement protective controls against web application threats."
     },
     {
-      "id": 16,
+      "id": "16",
       "title": "Database Administrator (PostgreSQL)",
       "company": "DataVault Systems",
       "location": "Pune",
@@ -189,11 +274,17 @@
       "experience": 4,
       "salary": "14 - 19 LPA",
       "postedDate": "2026-10-22",
-      "skills": ["PostgreSQL", "Database Tuning", "Backup/Recovery", "Replication", "Linux"],
+      "skills": [
+        "PostgreSQL",
+        "Database Tuning",
+        "Backup/Recovery",
+        "Replication",
+        "Linux"
+      ],
       "description": "Ensure high availability and sub-second query performance for multi-terabyte transactional PostgreSQL databases."
     },
     {
-      "id": 17,
+      "id": "17",
       "title": "Frontend Developer (Vue & React)",
       "company": "PixelPulse Media",
       "location": "Remote",
@@ -201,11 +292,17 @@
       "experience": 2,
       "salary": "9 - 13 LPA",
       "postedDate": "2026-10-26",
-      "skills": ["Vue.js", "React", "Tailwind CSS", "JavaScript", "Vite"],
+      "skills": [
+        "Vue.js",
+        "React",
+        "Tailwind CSS",
+        "JavaScript",
+        "Vite"
+      ],
       "description": "Build high-conversion interactive dashboards and landing pages with clean component modularity and responsive CSS."
     },
     {
-      "id": 18,
+      "id": "18",
       "title": "Site Reliability Engineer (SRE)",
       "company": "ScalePeak Platforms",
       "location": "Bengaluru",
@@ -213,11 +310,17 @@
       "experience": 5,
       "salary": "20 - 28 LPA",
       "postedDate": "2026-10-27",
-      "skills": ["Kubernetes", "Prometheus", "Grafana", "Golang", "AWS"],
+      "skills": [
+        "Kubernetes",
+        "Prometheus",
+        "Grafana",
+        "Golang",
+        "AWS"
+      ],
       "description": "Guarantee 99.99% service uptime, lead incident post-mortems, and automate self-healing distributed infrastructure."
     },
     {
-      "id": 19,
+      "id": "19",
       "title": "Business Intelligence Developer",
       "company": "MetrixPoint Solutions",
       "location": "Hyderabad",
@@ -225,11 +328,17 @@
       "experience": 2,
       "salary": "8 - 12 LPA",
       "postedDate": "2026-10-24",
-      "skills": ["Power BI", "SQL", "DAX", "ETL", "Data Modeling"],
+      "skills": [
+        "Power BI",
+        "SQL",
+        "DAX",
+        "ETL",
+        "Data Modeling"
+      ],
       "description": "Design visual executive scorecards, streamline automated ETL data refreshes, and translate business KPIs into dashboards."
     },
     {
-      "id": 20,
+      "id": "20",
       "title": "Web Development Intern",
       "company": "LaunchPad Innovations",
       "location": "Remote",
@@ -237,32 +346,32 @@
       "experience": 0,
       "salary": "25K - 35K / month",
       "postedDate": "2026-10-28",
-      "skills": ["HTML5", "CSS3", "JavaScript", "React", "Git"],
+      "skills": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React",
+        "Git"
+      ],
       "description": "6-month paid internship working on real-world React features, participating in code reviews, and learning production development workflows."
     }
   ],
   "candidates": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Suren Sharma",
       "email": "suren@example.com",
       "phone": "+91 9876543210",
       "experience": 2,
-      "skills": ["React", "JavaScript", "HTML/CSS"],
+      "skills": [
+        "React",
+        "JavaScript",
+        "HTML/CSS"
+      ],
       "location": "Hyderabad",
       "resume": "suren_resume.pdf"
     }
   ],
-  "applications": [
-    {
-      "id": "app-1",
-      "jobId": 1,
-      "candidateId": 1,
-      "candidateName": "Suren Sharma",
-      "jobTitle": "Senior React Developer",
-      "company": "TechNova Labs",
-      "appliedDate": "2026-10-25",
-      "status": "Under Review"
-    }
-  ]
+  "applications": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }

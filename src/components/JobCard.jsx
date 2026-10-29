@@ -2,6 +2,12 @@ import "./JobCard.css";
 import { Link } from "react-router-dom";
 
 function JobCard({ job }) {
+  const skillsList = Array.isArray(job.skills)
+    ? job.skills
+    : typeof job.skills === "string"
+      ? job.skills.split(",").map((s) => s.trim()).filter(Boolean)
+      : [];
+
   return (
     <article className="job-card">
       <div className="job-card-top">
@@ -26,9 +32,9 @@ function JobCard({ job }) {
           {job.postedDate && <span>Posted {job.postedDate}</span>}
         </div>
 
-        {job.skills.length > 0 && (
+        {skillsList.length > 0 && (
           <div className="job-skills">
-            {job.skills.map((skill) => (
+            {skillsList.map((skill) => (
               <span key={skill}>{skill}</span>
             ))}
           </div>

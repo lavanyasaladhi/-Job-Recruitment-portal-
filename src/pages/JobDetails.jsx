@@ -109,6 +109,22 @@ function JobDetails() {
     setApplyLoading(true);
 
     try {
+      // Prevent duplicate applications for the same job
+      const existingApps = await getApplications();
+      const alreadySubmitted = existingApps.some(
+        (app) =>
+          String(app.jobId) === String(job.id) &&
+          (app.candidateEmail?.toLowerCase() === candidateEmail.trim().toLowerCase() ||
+            (user?.id && String(app.candidateId) === String(user.id)))
+      );
+
+      if (alreadySubmitted) {
+        setApplyError("You have already submitted an application for this job.");
+        setAlreadyApplied(true);
+        setApplyLoading(false);
+        return;
+      }
+
       const applicationPayload = {
         jobId: job.id,
         candidateId: user?.id || Date.now(),

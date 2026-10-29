@@ -8,6 +8,7 @@ import {
   User,
 } from "lucide-react";
 import { useAuth } from "../context/useAuth";
+import { getCandidates, createCandidate } from "../services/api";
 import "./Login.css";
 
 function Login({ initialMode = "signin" }) {
@@ -35,7 +36,7 @@ function Login({ initialMode = "signin" }) {
     setSearchParams({ mode: newMode });
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (mode === "register") {
@@ -44,17 +45,23 @@ function Login({ initialMode = "signin" }) {
         return;
       }
 
-      // Save user profile locally
-      const registeredUser = {
-        id: Date.now(),
-        name: name.trim(),
-        email: email.trim(),
-        role: "candidate",
-        registeredAt: new Date().toISOString(),
-      };
-
-      // Set user session in context
-      login(registeredUser);
+      try {
+        const candidatePayload = {
+          name: name.trim(),
+          email: email.trim(),
+          role: "candidate",
+          registeredAt: new Date().toISOString(),
+        };
+        const saved = await createCandidate(candidatePayload);
+        login(saved);
+      } catch {
+        login({
+          id: Date.now(),
+          name: name.trim(),
+          email: email.trim(),
+          role: "candidate",
+        });
+      }
 
       setNotice({
         type: "success",
@@ -71,14 +78,29 @@ function Login({ initialMode = "signin" }) {
         return;
       }
 
-      const signedInUser = {
-        id: Date.now(),
-        name: email.split("@")[0],
-        email: email.trim(),
-        role: "candidate",
-      };
-
-      login(signedInUser);
+      try {
+        const candidates = await getCandidates();
+        const matched = candidates.find(
+          (c) => c.email?.toLowerCase() === email.trim().toLowerCase()
+        );
+        if (matched) {
+          login(matched);
+        } else {
+          login({
+            id: Date.now(),
+            name: email.split("@")[0],
+            email: email.trim(),
+            role: "candidate",
+          });
+        }
+      } catch {
+        login({
+          id: Date.now(),
+          name: email.split("@")[0],
+          email: email.trim(),
+          role: "candidate",
+        });
+      }
 
       setNotice({
         type: "success",

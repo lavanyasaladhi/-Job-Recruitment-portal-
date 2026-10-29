@@ -28,13 +28,14 @@ function MyApplications() {
           signal: controller.signal,
         });
 
-        // Filter for current user's applications
+        // Filter for current user's applications by candidateId or email
         const userApps = allApplications.filter(
           (app) =>
+            (user.id && String(app.candidateId) === String(user.id)) ||
             app.candidateEmail?.toLowerCase() === user.email?.toLowerCase()
         );
 
-        setApplications(userApps.length > 0 ? userApps : allApplications);
+        setApplications(userApps);
       } catch (err) {
         if (!controller.signal.aborted) {
           setError(err.message || "Failed to load your applications.");
