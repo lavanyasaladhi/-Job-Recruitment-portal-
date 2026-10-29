@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import {
@@ -6,6 +7,7 @@ import {
   LockKeyhole,
   Mail,
   User,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import { getCandidates, createCandidate } from "../services/api";
@@ -41,7 +43,10 @@ function Login({ initialMode = "signin" }) {
 
     if (mode === "register") {
       if (!name.trim()) {
-        setNotice({ type: "error", text: "Please provide your full name." });
+        setNotice({
+          type: "error",
+          text: "Please provide your full name.",
+        });
         return;
       }
 
@@ -52,6 +57,7 @@ function Login({ initialMode = "signin" }) {
           role: "candidate",
           registeredAt: new Date().toISOString(),
         };
+
         const saved = await createCandidate(candidatePayload);
         login(saved);
       } catch {
@@ -72,17 +78,23 @@ function Login({ initialMode = "signin" }) {
         navigate("/jobs");
       }, 1200);
     } else {
-      // Sign-in handler
       if (!email.trim()) {
-        setNotice({ type: "error", text: "Please enter your email." });
+        setNotice({
+          type: "error",
+          text: "Please enter your email.",
+        });
         return;
       }
 
       try {
         const candidates = await getCandidates();
+
         const matched = candidates.find(
-          (c) => c.email?.toLowerCase() === email.trim().toLowerCase()
+          (candidate) =>
+            candidate.email?.toLowerCase() ===
+            email.trim().toLowerCase()
         );
+
         if (matched) {
           login(matched);
         } else {
@@ -117,16 +129,23 @@ function Login({ initialMode = "signin" }) {
 
   return (
     <main className="portal-login-page">
-      <div className="portal-glow portal-glow-left" aria-hidden="true" />
-      <div className="portal-glow portal-glow-right" aria-hidden="true" />
+      <div
+        className="portal-glow portal-glow-left"
+        aria-hidden="true"
+      />
+      <div
+        className="portal-glow portal-glow-right"
+        aria-hidden="true"
+      />
 
       <div className="portal-login-main">
         <h1 className="portal-hero-title">
-          {isRegister ? "Start your career journey" : "Find your dream job here"}
+          {isRegister
+            ? "Start your career journey"
+            : "Find your dream job here"}
         </h1>
 
         <section className="portal-login-card">
-          {/* Mode Switcher Tabs */}
           <div className="portal-tabs" role="tablist">
             <button
               type="button"
@@ -137,6 +156,7 @@ function Login({ initialMode = "signin" }) {
             >
               Sign In
             </button>
+
             <button
               type="button"
               role="tab"
@@ -150,8 +170,11 @@ function Login({ initialMode = "signin" }) {
 
           <header className="portal-login-heading">
             <p className="portal-eyebrow">
-              {isRegister ? "CREATE CANDIDATE ACCOUNT" : "CANDIDATE PORTAL"}
+              {isRegister
+                ? "CREATE CANDIDATE ACCOUNT"
+                : "CANDIDATE PORTAL"}
             </p>
+
             <h2>
               {isRegister ? (
                 <>
@@ -163,6 +186,7 @@ function Login({ initialMode = "signin" }) {
                 </>
               )}
             </h2>
+
             <p className="portal-subtitle">
               {isRegister
                 ? "Create your profile to search and apply for jobs"
@@ -171,7 +195,6 @@ function Login({ initialMode = "signin" }) {
           </header>
 
           <form onSubmit={handleSubmit}>
-            {/* Full Name field (Only in Register mode) */}
             {isRegister && (
               <div className="portal-field">
                 <div className="portal-input-wrapper">
@@ -180,6 +203,7 @@ function Login({ initialMode = "signin" }) {
                     size={20}
                     aria-hidden="true"
                   />
+
                   <input
                     type="text"
                     name="name"
@@ -194,7 +218,6 @@ function Login({ initialMode = "signin" }) {
               </div>
             )}
 
-            {/* Email field */}
             <div className="portal-field">
               <div className="portal-input-wrapper">
                 <Mail
@@ -202,6 +225,7 @@ function Login({ initialMode = "signin" }) {
                   size={20}
                   aria-hidden="true"
                 />
+
                 <input
                   type="email"
                   name="email"
@@ -215,7 +239,6 @@ function Login({ initialMode = "signin" }) {
               </div>
             </div>
 
-            {/* Password field */}
             <div className="portal-field">
               <div className="portal-input-wrapper">
                 <LockKeyhole
@@ -223,21 +246,29 @@ function Login({ initialMode = "signin" }) {
                   size={20}
                   aria-hidden="true"
                 />
+
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder={isRegister ? "Create Password" : "Password"}
                   aria-label="Password"
-                  autoComplete={isRegister ? "new-password" : "current-password"}
+                  autoComplete={
+                    isRegister ? "new-password" : "current-password"
+                  }
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   required
                 />
+
                 <button
                   type="button"
                   className="portal-password-toggle"
-                  onClick={() => setShowPassword((previous) => !previous)}
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  onClick={() =>
+                    setShowPassword((previous) => !previous)
+                  }
+                  aria-label={
+                    showPassword ? "Hide password" : "Show password"
+                  }
                 >
                   {showPassword ? (
                     <EyeOff size={19} aria-hidden="true" />
@@ -267,7 +298,31 @@ function Login({ initialMode = "signin" }) {
             </p>
           )}
 
-          {/* New User Option Link */}
+          {/* Recruiter Dashboard Button */}
+          {!isRegister && (
+            <div className="portal-recruiter-section">
+              <div className="portal-recruiter-divider">
+                <span>OR</span>
+              </div>
+
+              <button
+                type="button"
+                className="portal-recruiter-button"
+                onClick={() => navigate("/recruiter-dashboard")}
+              >
+                <BriefcaseBusiness size={19} aria-hidden="true" />
+                <span>Recruiter Login</span>
+                <span className="portal-arrow" aria-hidden="true">
+                  →
+                </span>
+              </button>
+
+              <p className="portal-recruiter-caption">
+                Access job and application management
+              </p>
+            </div>
+          )}
+
           <div className="portal-footer-links">
             <p className="portal-register-text">
               {isRegister ? (

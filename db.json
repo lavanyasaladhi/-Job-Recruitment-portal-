@@ -1,23 +1,6 @@
 {
   "jobs": [
     {
-      "id": "1",
-      "title": "Senior React Developer",
-      "company": "TechNova Labs",
-      "location": "Hyderabad",
-      "type": "Full-time",
-      "experience": 3,
-      "salary": "14 - 18 LPA",
-      "postedDate": "2026-10-24",
-      "skills": [
-        "React",
-        "JavaScript",
-        "TypeScript",
-        "Redux"
-      ],
-      "description": "We are seeking an experienced React Developer to build scalable, responsive web applications and modernize our client-facing portal."
-    },
-    {
       "id": "2",
       "title": "UI/UX Product Designer",
       "company": "CreativePulse Studio",
@@ -51,23 +34,6 @@
         "Docker"
       ],
       "description": "Build high-throughput microservices and responsive React frontends for enterprise cloud analytics platforms."
-    },
-    {
-      "id": "4",
-      "title": "Junior Frontend Developer",
-      "company": "InnoTech Solutions",
-      "location": "Pune",
-      "type": "Full-time",
-      "experience": 1,
-      "salary": "6 - 9 LPA",
-      "postedDate": "2026-10-21",
-      "skills": [
-        "JavaScript",
-        "React",
-        "HTML5",
-        "CSS3"
-      ],
-      "description": "Great opportunity for a junior developer eager to build production user interfaces and write maintainable modern JavaScript code."
     },
     {
       "id": "5",
@@ -254,7 +220,7 @@
       "location": "Chennai",
       "type": "Full-time",
       "experience": 3,
-      "salary": "12 - 17 LPA",
+      "salary": "",
       "postedDate": "2026-10-25",
       "skills": [
         "Ethical Hacking",
@@ -263,7 +229,12 @@
         "OWASP",
         "Vulnerability Scanning"
       ],
-      "description": "Perform security audits, vulnerability assessments, and implement protective controls against web application threats."
+      "description": "Perform security audits, vulnerability assessments, and implement protective controls against web application",
+      "jobType": "Full-time",
+      "minExperience": 3,
+      "maxExperience": 3,
+      "minSalary": 0,
+      "maxSalary": 0
     },
     {
       "id": "16",
@@ -354,6 +325,48 @@
         "Git"
       ],
       "description": "6-month paid internship working on real-world React features, participating in code reviews, and learning production development workflows."
+    },
+    {
+      "title": "froentend developer",
+      "company": "infosys",
+      "location": "Hyderbad",
+      "type": "Full-time",
+      "jobType": "Full-time",
+      "minExperience": 1,
+      "maxExperience": 6,
+      "minSalary": 30000,
+      "maxSalary": 59982,
+      "experience": 1,
+      "salary": "30000",
+      "skills": [
+        "react",
+        "java",
+        "css"
+      ],
+      "description": "froendent developer",
+      "postedDate": "2026-10-29",
+      "id": "BP4q-bWtEpQ"
+    },
+    {
+      "title": "froentend developer",
+      "company": "infosys",
+      "location": "Hyderbad",
+      "type": "Full-time",
+      "jobType": "Full-time",
+      "minExperience": 3,
+      "maxExperience": 7,
+      "minSalary": 30000,
+      "maxSalary": 70000,
+      "experience": 3,
+      "salary": "30000",
+      "skills": [
+        "react",
+        "java",
+        "css"
+      ],
+      "description": "want to become a froentend developer",
+      "postedDate": "2026-10-29",
+      "id": "phF31eVoyRY"
     }
   ],
   "candidates": [
@@ -370,6 +383,13 @@
       ],
       "location": "Hyderabad",
       "resume": "suren_resume.pdf"
+    },
+    {
+      "name": "Sandhya sri Sanam",
+      "email": "sandhyasrisanam@gmail.com",
+      "role": "candidate",
+      "registeredAt": "2026-10-29T15:11:31.968Z",
+      "id": "MslCblOkaSU"
     }
   ],
   "applications": [],

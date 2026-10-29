@@ -1,3 +1,4 @@
+
 .portal-login-page,
 .portal-login-page * {
   box-sizing: border-box;
@@ -192,7 +193,11 @@
   padding: 11px 18px;
   border: 1px solid var(--color-primary);
   border-radius: 12px;
-  background: linear-gradient(110deg, var(--color-primary), #7c8740);
+  background: linear-gradient(
+    110deg,
+    var(--color-primary),
+    #7c8740
+  );
   color: #fff;
   font-size: 14px;
   font-weight: 700;
@@ -235,6 +240,12 @@
   line-height: 1.5;
 }
 
+.portal-login-notice.success {
+  border-color: #8ac082;
+  background: #eaf6e8;
+  color: #2b5424;
+}
+
 .portal-divider {
   display: flex;
   align-items: center;
@@ -252,6 +263,102 @@
   margin: 0;
   color: var(--color-text-muted);
   font-size: 11px;
+}
+
+/* Sign In and Register tabs */
+
+.portal-tabs {
+  display: flex;
+  background: #f0f3e6;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 20px;
+  gap: 4px;
+}
+
+.portal-tab {
+  flex: 1;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.portal-tab:hover {
+  color: var(--color-deep);
+}
+
+.portal-tab.active {
+  background: #fff;
+  color: var(--color-deep);
+  box-shadow: 0 2px 8px rgb(32 56 50 / 8%);
+}
+
+/* Role selection styles */
+
+.portal-role-group {
+  margin-bottom: 16px;
+}
+
+.portal-role-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.portal-role-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.portal-role-option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--color-text);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.portal-role-option.selected {
+  border-color: var(--color-primary);
+  background: #f4f7e8;
+  color: var(--color-primary);
+}
+
+/* Inline registration link */
+
+.portal-inline-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: inherit;
+  font-family: inherit;
+  text-decoration: underline;
+  padding: 0;
+  display: inline;
+}
+
+.portal-inline-link:hover {
+  color: var(--color-primary-hover);
 }
 
 .portal-register-text {
@@ -285,6 +392,93 @@
   margin: 16px auto 0;
   font-size: 12px;
 }
+
+.portal-footer-links {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ========================================
+   RECRUITER LOGIN BUTTON
+======================================== */
+
+.portal-recruiter-section {
+  margin-top: 18px;
+}
+
+.portal-recruiter-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 18px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+}
+
+.portal-recruiter-divider::before,
+.portal-recruiter-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.portal-recruiter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 49px;
+  padding: 11px 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--color-primary);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.portal-recruiter-button .portal-arrow {
+  margin-left: auto;
+}
+
+.portal-recruiter-button:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 20px rgb(99 107 47 / 16%);
+}
+
+.portal-recruiter-button:active {
+  transform: translateY(0);
+}
+
+.portal-recruiter-button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.portal-recruiter-caption {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Responsive layout */
 
 @media (max-width: 600px) {
   .portal-login-page {
@@ -339,110 +533,12 @@
   }
 }
 
-
-/* ========================================
-   MODE TABS, ROLE OPTIONS & NOTICES
-======================================== */
-.portal-login-notice.success {
-  border-color: #8ac082;
-  background: #eaf6e8;
-  color: #2b5424;
-}
-
-.portal-tabs {
-  display: flex;
-  background: #f0f3e6;
-  border-radius: 12px;
-  padding: 4px;
-  margin-bottom: 20px;
-  gap: 4px;
-}
-
-.portal-tab {
-  flex: 1;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  font-weight: 600;
-  font-size: 13px;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.portal-tab:hover {
-  color: var(--color-deep);
-}
-
-.portal-tab.active {
-  background: #ffffff;
-  color: var(--color-deep);
-  box-shadow: 0 2px 8px rgba(32, 56, 50, 0.08);
-}
-
-.portal-role-group {
-  margin-bottom: 16px;
-}
-
-.portal-role-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  margin-bottom: 8px;
-  text-align: left;
-}
-
-.portal-role-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.portal-role-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 9px 8px;
-  border: 1px solid var(--color-border);
-  border-radius: 10px;
-  background: #ffffff;
-  color: var(--color-text);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.portal-role-option.selected {
-  border-color: var(--color-primary);
-  background: #f4f7e8;
-  color: var(--color-primary);
-}
-
-.portal-inline-link {
-  background: none;
-  border: none;
-  color: var(--color-primary);
-  font-weight: 700;
-  cursor: pointer;
-  font-size: inherit;
-  font-family: inherit;
-  text-decoration: underline;
-  padding: 0;
-  display: inline;
-}
-
-.portal-inline-link:hover {
-  color: var(--color-primary-hover);
-}
-
-.portal-footer-links {
-  margin-top: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
+@media (prefers-reduced-motion: reduce) {
+  .portal-tab,
+  .portal-signin-button,
+  .portal-arrow,
+  .portal-input-wrapper,
+  .portal-recruiter-button {
+    transition: none;
+  }
 }

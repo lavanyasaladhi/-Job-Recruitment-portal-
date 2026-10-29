@@ -1,12 +1,25 @@
-
+ 
 .recruiter-dashboard {
+  --dashboard-primary: #636b2f;
+  --dashboard-deep: #203832;
+  --dashboard-muted: #686a60;
+  --dashboard-border: #e5e6dc;
+  --dashboard-surface: #ffffff;
+  --dashboard-background: #fafaf6;
+
   min-height: 100vh;
   padding: 40px;
-  background: #f5f7fb;
-  color: #172033;
-  font-family: Arial, sans-serif;
+  background: var(--dashboard-background);
+  color: var(--dashboard-deep);
+  font-family: inherit;
+  box-sizing: border-box;
 }
 
+.recruiter-dashboard * {
+  box-sizing: border-box;
+}
+
+/* Header */
 .dashboard-header {
   display: flex;
   align-items: center;
@@ -17,37 +30,60 @@
 
 .dashboard-eyebrow {
   margin: 0 0 10px;
-  color: #4263eb;
+  color: var(--dashboard-primary);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .dashboard-header h1 {
   margin: 0 0 10px;
-  font-size: 30px;
+  color: var(--dashboard-deep);
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .dashboard-header p:not(.dashboard-eyebrow),
 .dashboard-section-heading p {
-  color: #6b7280;
-  line-height: 1.6;
+  color: var(--dashboard-muted);
+  line-height: 1.7;
 }
 
+.dashboard-header p:not(.dashboard-eyebrow) {
+  margin: 0;
+}
+
+/* Add Job Button */
 .dashboard-add-button {
-  border: 0;
-  border-radius: 9px;
-  padding: 13px 20px;
-  background: #315bea;
-  color: white;
+  flex-shrink: 0;
+  border: 1px solid var(--dashboard-primary);
+  border-radius: 10px;
+  padding: 13px 22px;
+  background: var(--dashboard-primary);
+  color: #fff;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .dashboard-add-button:hover {
-  background: #2448c7;
+  background: #505726;
+  box-shadow: 0 6px 16px rgba(99, 107, 47, 0.18);
+  transform: translateY(-2px);
 }
 
+.dashboard-add-button:focus-visible {
+  outline: 3px solid rgba(99, 107, 47, 0.3);
+  outline-offset: 3px;
+}
+
+/* Statistics Cards */
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -55,12 +91,13 @@
   margin-bottom: 36px;
 }
 
+/* Job Listings Container */
 .dashboard-jobs-section {
-  padding: 24px;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  background: white;
-  box-shadow: 0 5px 20px rgba(25, 42, 70, 0.04);
+  padding: 28px;
+  border: 1px solid var(--dashboard-border);
+  border-radius: 18px;
+  background: var(--dashboard-surface);
+  box-shadow: 0 8px 28px rgba(32, 56, 50, 0.05);
 }
 
 .dashboard-section-heading {
@@ -69,29 +106,80 @@
 
 .dashboard-section-heading h2 {
   margin: 0;
-  font-size: 21px;
+  color: var(--dashboard-deep);
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .dashboard-section-heading p {
-  margin-bottom: 0;
+  margin: 8px 0 0;
   font-size: 14px;
+}
+
+/* Loading and Error Messages */
+.recruiter-dashboard [role="alert"] {
+  margin: 0 0 20px;
+  padding: 13px 16px;
+  border: 1px solid #e8c8bd;
+  border-radius: 10px;
+  background: #fff5f1;
+  color: #923b2c;
+  line-height: 1.5;
+}
+
+.recruiter-dashboard .dashboard-jobs-section > p {
+  color: var(--dashboard-muted);
+  line-height: 1.6;
+}
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .recruiter-dashboard {
+    padding: 30px 24px;
+  }
+
+  .dashboard-stats {
+    gap: 14px;
+  }
+
+  .dashboard-jobs-section {
+    padding: 22px;
+  }
 }
 
 @media (max-width: 768px) {
   .recruiter-dashboard {
-    padding: 22px 16px;
+    padding: 24px 16px;
   }
 
   .dashboard-header {
     align-items: flex-start;
     flex-direction: column;
+    gap: 18px;
+  }
+
+  .dashboard-add-button {
+    width: 100%;
   }
 
   .dashboard-stats {
     grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
   .dashboard-jobs-section {
-    padding: 16px;
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .dashboard-section-heading h2 {
+    font-size: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-add-button {
+    transition: none;
   }
 }
