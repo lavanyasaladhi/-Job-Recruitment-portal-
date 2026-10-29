@@ -1,59 +1,189 @@
-
 import { useState } from "react";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import {
-  Mail,
-  LockKeyhole,
   Eye,
   EyeOff,
+  LockKeyhole,
+  Mail,
+  User,
+  UserCheck,
+  Building,
 } from "lucide-react";
-
+import { useAuth } from "../context/useAuth";
 import "./Login.css";
 
-function Login() {
+function Login({ initialMode = "signin" }) {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const queryMode = searchParams.get("mode");
+
+  const [modeOverride, setModeOverride] = useState(null);
+  const mode =
+    modeOverride ??
+    (queryMode === "register" || initialMode === "register"
+      ? "register"
+      : "signin");
+
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("candidate"); // 'candidate' | 'recruiter'
   const [showPassword, setShowPassword] = useState(false);
+  const [notice, setNotice] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  function switchMode(newMode) {
+    setModeOverride(newMode);
+    setNotice(null);
+    setSearchParams({ mode: newMode });
+  }
 
-    if (!email.trim() || !password) {
-      alert("Please enter your email and password.");
-      return;
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    if (mode === "register") {
+      if (!name.trim()) {
+        setNotice({ type: "error", text: "Please provide your full name." });
+        return;
+      }
+
+      // Save user profile locally
+      const registeredUser = {
+        id: Date.now(),
+        name: name.trim(),
+        email: email.trim(),
+        role,
+        registeredAt: new Date().toISOString(),
+      };
+
+      // Set user session in context
+      login(registeredUser);
+
+      setNotice({
+        type: "success",
+        text: `Registration successful for ${name}! Entering your portal…`,
+      });
+
+      // Switch to dashboard or jobs
+      setTimeout(() => {
+        if (role === "recruiter") {
+          navigate("/recruiter-dashboard");
+        } else {
+          navigate("/jobs");
+        }
+      }, 1200);
+    } else {
+      // Sign-in handler
+      if (!email.trim()) {
+        setNotice({ type: "error", text: "Please enter your email." });
+        return;
+      }
+
+      const signedInUser = {
+        name: email.split("@")[0],
+        email: email.trim(),
+        role,
+      };
+
+      login(signedInUser);
+
+      setNotice({
+        type: "success",
+        text: `Welcome back! Signed in as ${email}.`,
+      });
+
+      setTimeout(() => {
+        if (role === "recruiter") {
+          navigate("/recruiter-dashboard");
+        } else {
+          navigate("/jobs");
+        }
+      }, 1000);
     }
+  }
 
-    // Demo only: connect the backend authentication API here.
-    alert("Login form submitted!");
-  };
+  const isRegister = mode === "register";
 
   return (
-    <div className="portal-login-page">
-      {/* Background glow without corner lines */}
-      <div className="portal-glow portal-glow-left" />
-      <div className="portal-glow portal-glow-right" />
+    <main className="portal-login-page">
+      <div className="portal-glow portal-glow-left" aria-hidden="true" />
+      <div className="portal-glow portal-glow-right" aria-hidden="true" />
 
-      <main className="portal-login-main">
+      <div className="portal-login-main">
         <h1 className="portal-hero-title">
-          Find your dream job here
+          {isRegister ? "Start your career journey" : "Find your dream job here"}
         </h1>
 
         <section className="portal-login-card">
+          {/* Mode Switcher Tabs */}
+          <div className="portal-tabs" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={!isRegister}
+              className={`portal-tab ${!isRegister ? "active" : ""}`}
+              onClick={() => switchMode("signin")}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={isRegister}
+              className={`portal-tab ${isRegister ? "active" : ""}`}
+              onClick={() => switchMode("register")}
+            >
+              Register
+            </button>
+          </div>
+
           <header className="portal-login-heading">
             <p className="portal-eyebrow">
-              JOB RECRUITMENT PORTAL
+              {isRegister ? "CREATE AN ACCOUNT" : "JOB RECRUITMENT PORTAL"}
             </p>
-
             <h2>
-              Welcome <span>Back</span>
+              {isRegister ? (
+                <>
+                  Register as <span>New User</span>
+                </>
+              ) : (
+                <>
+                  Welcome <span>Back</span>
+                </>
+              )}
             </h2>
-
             <p className="portal-subtitle">
-              Sign in to your Job Recruitment Portal
+              {isRegister
+                ? "Create your profile to search and apply for jobs"
+                : "Sign in to your Job Recruitment Portal"}
             </p>
           </header>
 
           <form onSubmit={handleSubmit}>
-            {/* Email */}
+            {/* Full Name field (Only in Register mode) */}
+            {isRegister && (
+              <div className="portal-field">
+                <div className="portal-input-wrapper">
+                  <User
+                    className="portal-input-icon"
+                    size={20}
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Full Name"
+                    aria-label="Full Name"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Email field */}
             <div className="portal-field">
               <div className="portal-input-wrapper">
                 <Mail
@@ -61,7 +191,6 @@ function Login() {
                   size={20}
                   aria-hidden="true"
                 />
-
                 <input
                   type="email"
                   name="email"
@@ -69,13 +198,13 @@ function Login() {
                   aria-label="Email Address"
                   autoComplete="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(event) => setEmail(event.target.value)}
                   required
                 />
               </div>
             </div>
 
-            {/* Password */}
+            {/* Password field */}
             <div className="portal-field">
               <div className="portal-input-wrapper">
                 <LockKeyhole
@@ -83,62 +212,114 @@ function Login() {
                   size={20}
                   aria-hidden="true"
                 />
-
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  placeholder="Password"
+                  placeholder={isRegister ? "Create Password" : "Password"}
                   aria-label="Password"
-                  autoComplete="current-password"
+                  autoComplete={isRegister ? "new-password" : "current-password"}
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(event) => setPassword(event.target.value)}
                   required
                 />
-
                 <button
                   type="button"
                   className="portal-password-toggle"
-                  onClick={() =>
-                    setShowPassword((previous) => !previous)
-                  }
-                  aria-label={
-                    showPassword ? "Hide password" : "Show password"
-                  }
+                  onClick={() => setShowPassword((previous) => !previous)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? (
-                    <EyeOff size={19} />
+                    <EyeOff size={19} aria-hidden="true" />
                   ) : (
-                    <Eye size={19} />
+                    <Eye size={19} aria-hidden="true" />
                   )}
                 </button>
               </div>
             </div>
 
-            {/* Sign In */}
-            <button
-              type="submit"
-              className="portal-signin-button"
-            >
-              <span>Sign In</span>
-              <span className="portal-arrow">→</span>
+            {/* Role Selection */}
+            <div className="portal-role-group">
+              <span className="portal-role-label">
+                {isRegister ? "Register as:" : "Sign in as:"}
+              </span>
+              <div className="portal-role-options">
+                <button
+                  type="button"
+                  className={`portal-role-option ${
+                    role === "candidate" ? "selected" : ""
+                  }`}
+                  onClick={() => setRole("candidate")}
+                >
+                  <UserCheck size={16} />
+                  <span>Candidate</span>
+                </button>
+                <button
+                  type="button"
+                  className={`portal-role-option ${
+                    role === "recruiter" ? "selected" : ""
+                  }`}
+                  onClick={() => setRole("recruiter")}
+                >
+                  <Building size={16} />
+                  <span>Recruiter</span>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" className="portal-signin-button">
+              <span>{isRegister ? "Create Account" : "Sign In"}</span>
+              <span className="portal-arrow" aria-hidden="true">
+                →
+              </span>
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="portal-divider">
-            <span />
-            <p>OR</p>
-            <span />
-          </div>
+          {notice && (
+            <p
+              className={`portal-login-notice ${
+                notice.type === "success" ? "success" : ""
+              }`}
+              role="alert"
+            >
+              {notice.text}
+            </p>
+          )}
 
-          {/* Register */}
-          <p className="portal-register-text">
-            Don’t have an account?
-            <a href="/register">Register</a>
-          </p>
+          {/* New User Option Link */}
+          <div className="portal-footer-links">
+            <p className="portal-register-text">
+              {isRegister ? (
+                <>
+                  Already have an account?{" "}
+                  <button
+                    type="button"
+                    className="portal-inline-link"
+                    onClick={() => switchMode("signin")}
+                  >
+                    Sign in here
+                  </button>
+                </>
+              ) : (
+                <>
+                  New user?{" "}
+                  <button
+                    type="button"
+                    className="portal-inline-link"
+                    onClick={() => switchMode("register")}
+                  >
+                    Register for new users
+                  </button>
+                </>
+              )}
+            </p>
+
+            <Link className="portal-home-link" to="/">
+              ← Back to home
+            </Link>
+          </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 }
 

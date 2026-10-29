@@ -1,23 +1,119 @@
+/* ========================================
+   CAREERCONNECT - GLOBAL DESIGN SYSTEM
+======================================== */
 
-* {
-  box-sizing: border-box;
+:root {
+  /* Official brand palette */
+  --color-primary: #636b2f;
+  --color-primary-hover: #505725;
+  --color-secondary: #bac095;
+  --color-accent: #d4de95;
+  --color-accent-soft: #f4f7e6;
+  --color-deep: #203832;
+  --color-deep-forest: #192b26;
+
+  /* Supporting neutral colors */
+  --color-background: #fafaf6;
+  --color-surface: #ffffff;
+  --color-surface-translucent: rgba(255, 255, 255, 0.85);
+  --color-text: #292b22;
+  --color-text-muted: #686a60;
+  --color-border: #e5e6dc;
+  --color-focus: #636b2f;
+
+  /* Common layout values */
+  --navbar-height: 74px;
+  --container-width: 1240px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 3px rgba(32, 56, 50, 0.05);
+  --shadow-sm: 0 4px 14px rgba(32, 56, 50, 0.06);
+  --shadow-md: 0 12px 32px rgba(32, 56, 50, 0.09);
+  --shadow-lg: 0 20px 45px rgba(32, 56, 50, 0.12);
 }
 
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100%;
+/* 1. Predictable sizing and default reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* 2. Global html & body */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
-  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    sans-serif;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  background-image: url("./assets/botanical-background.png");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 3. Form controls & button defaults */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* 4. Images */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* 5. Consistent link behavior */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 6. Keyboard accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* 7. Text selection */
+::selection {
+  color: var(--color-deep);
+  background-color: var(--color-accent);
 }
