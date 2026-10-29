@@ -1,0 +1,142 @@
+
+.applicants-table-card {
+  width: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+}
+
+.applicants-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.applicants-table-header h2 {
+  margin: 0;
+  color: #172554;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.applicants-table-header p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.applicants-count {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.applicants-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.applicants-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.applicants-table th {
+  padding: 15px 24px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.applicants-table td {
+  padding: 18px 24px;
+  border-top: 1px solid #f1f5f9;
+  color: #475569;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.applicants-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.applicant-name {
+  color: #172554;
+  font-weight: 600;
+}
+
+.applicant-email {
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.resume-link {
+  padding: 7px 10px;
+  border: 1px solid #bfdbfe;
+  border-radius: 7px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.resume-link:hover {
+  background: #dbeafe;
+}
+
+.resume-unavailable {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.applicant-status-select {
+  min-width: 130px;
+  padding: 8px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.applicant-status-select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.applicants-empty {
+  padding: 36px 24px !important;
+  color: #64748b !important;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .applicants-table-header {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .applicants-table th,
+  .applicants-table td {
+    padding: 14px 16px;
+  }
+}

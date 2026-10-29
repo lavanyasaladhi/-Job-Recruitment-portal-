@@ -1,0 +1,51 @@
+
+.applications-page {
+  min-height: 100vh;
+  padding: 32px;
+  background: #f5f7fb;
+  color: #172033;
+  font-family: Arial, sans-serif;
+}
+
+.applications-back {
+  margin-bottom: 28px;
+  border: none;
+  background: transparent;
+  color: #315bea;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.applications-header {
+  margin-bottom: 30px;
+}
+
+.applications-eyebrow {
+  color: #315bea;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.applications-header h1 {
+  margin: 10px 0;
+  font-size: 32px;
+}
+
+.applications-header p:not(.applications-eyebrow) {
+  color: #6b7280;
+}
+
+.applications-header span {
+  display: inline-block;
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .applications-page {
+    padding: 20px 14px;
+  }
+}
