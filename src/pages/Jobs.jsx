@@ -16,112 +16,215 @@ function SearchBar({
 }) {
   const [keywordDraft, setKeywordDraft] = useState(keyword);
   const [locationDraft, setLocationDraft] = useState(location);
-  const [experienceDraft, setExperienceDraft] = useState(experience);
-  const [jobTypeDraft, setJobTypeDraft] = useState(jobType);
+  const [showFilters, setShowFilters] = useState(false);
 
-  const hasActiveFilters = Boolean(
-    keywordDraft.trim() ||
-      locationDraft.trim() ||
-      experienceDraft !== "all" ||
-      jobTypeDraft !== "all"
-  );
+  // Count how many filter criteria are currently active
+  const activeFilterCount =
+    (experience !== "all" ? 1 : 0) + (jobType !== "all" ? 1 : 0);
 
   function handleSubmit(event) {
     event.preventDefault();
-    onSearch(keywordDraft, locationDraft, experienceDraft, jobTypeDraft);
+    onSearch(keywordDraft, locationDraft, experience, jobType);
   }
 
   function handleExperienceChange(event) {
     const nextExperience = event.target.value;
-    setExperienceDraft(nextExperience);
-    onSearch(keywordDraft, locationDraft, nextExperience, jobTypeDraft);
+    onSearch(keywordDraft, locationDraft, nextExperience, jobType);
   }
 
   function handleJobTypeChange(event) {
     const nextJobType = event.target.value;
-    setJobTypeDraft(nextJobType);
-    onSearch(keywordDraft, locationDraft, experienceDraft, nextJobType);
+    onSearch(keywordDraft, locationDraft, experience, nextJobType);
   }
 
-  function handleClear() {
+  function handleClearKeyword() {
+    setKeywordDraft("");
+    onSearch("", locationDraft, experience, jobType);
+  }
+
+  function handleClearLocation() {
+    setLocationDraft("");
+    onSearch(keywordDraft, "", experience, jobType);
+  }
+
+  function handleClearAll() {
     setKeywordDraft("");
     setLocationDraft("");
-    setExperienceDraft("all");
-    setJobTypeDraft("all");
     onClear();
   }
 
   return (
-    <form className="jobs-search-panel" onSubmit={handleSubmit}>
-      <div className="search-field">
-        <label htmlFor="keyword">Job title</label>
-        <input
-          id="keyword"
-          type="search"
-          placeholder="e.g. React Developer"
-          value={keywordDraft}
-          onChange={(event) => setKeywordDraft(event.target.value)}
-        />
-      </div>
+    <div className="jobs-search-container">
+      <form className="jobs-search-panel" onSubmit={handleSubmit}>
+        <div className="search-field">
+          <label htmlFor="keyword">Job title</label>
+          <input
+            id="keyword"
+            type="search"
+            placeholder="e.g. React Developer"
+            value={keywordDraft}
+            onChange={(event) => setKeywordDraft(event.target.value)}
+          />
+        </div>
 
-      <div className="search-field">
-        <label htmlFor="location">Location</label>
-        <input
-          id="location"
-          type="search"
-          placeholder="e.g. Hyderabad"
-          value={locationDraft}
-          onChange={(event) => setLocationDraft(event.target.value)}
-        />
-      </div>
+        <div className="search-field">
+          <label htmlFor="location">Location</label>
+          <input
+            id="location"
+            type="search"
+            placeholder="e.g. Hyderabad"
+            value={locationDraft}
+            onChange={(event) => setLocationDraft(event.target.value)}
+          />
+        </div>
 
-      <div className="search-field">
-        <label htmlFor="experience">Experience</label>
-        <select
-          id="experience"
-          value={experienceDraft}
-          onChange={handleExperienceChange}
-        >
-          <option value="all">Any experience</option>
-          <option value="0">Entry level (0 yrs)</option>
-          <option value="1">Up to 1 year</option>
-          <option value="2">Up to 2 years</option>
-          <option value="3">Up to 3 years</option>
-          <option value="5">Up to 5 years</option>
-        </select>
-      </div>
-
-      <div className="search-field">
-        <label htmlFor="jobType">Job type</label>
-        <select
-          id="jobType"
-          value={jobTypeDraft}
-          onChange={handleJobTypeChange}
-        >
-          <option value="all">All job types</option>
-          <option value="Full-time">Full-time</option>
-          <option value="Part-time">Part-time</option>
-          <option value="Internship">Internship</option>
-          <option value="Contract">Contract</option>
-        </select>
-      </div>
-
-      <div className="search-actions">
         <button className="jobs-search-button" type="submit">
           Search Jobs
         </button>
-        {hasActiveFilters && (
+
+        <button
+          type="button"
+          className={`jobs-filter-toggle ${showFilters || activeFilterCount > 0 ? "active" : ""}`}
+          onClick={() => setShowFilters((previous) => !previous)}
+          aria-expanded={showFilters}
+          title="Toggle filter options"
+        >
+          <span className="filter-icon" aria-hidden="true">
+            ⚙
+          </span>
+          Filters
+          {activeFilterCount > 0 && (
+            <span className="filter-badge">{activeFilterCount}</span>
+          )}
+          <span className="filter-chevron" aria-hidden="true">
+            {showFilters ? "▲" : "▼"}
+          </span>
+        </button>
+      </form>
+
+      {/* Expandable filter options directly below the search bar */}
+      {showFilters && (
+        <div className="jobs-filter-drawer">
+          <div className="filter-drawer-header">
+            <h4>Filter options</h4>
+            <span className="filter-drawer-hint">
+              Refine listings by required experience and job type
+            </span>
+          </div>
+
+          <div className="filter-drawer-controls">
+            <div className="filter-control">
+              <label htmlFor="filter-experience">Experience</label>
+              <select
+                id="filter-experience"
+                value={experience}
+                onChange={handleExperienceChange}
+              >
+                <option value="all">Any experience</option>
+                <option value="0">Entry level (0 years)</option>
+                <option value="1">Up to 1 year</option>
+                <option value="2">Up to 2 years</option>
+                <option value="3">Up to 3 years</option>
+                <option value="5">Up to 5 years</option>
+              </select>
+            </div>
+
+            <div className="filter-control">
+              <label htmlFor="filter-jobtype">Job type</label>
+              <select
+                id="filter-jobtype"
+                value={jobType}
+                onChange={handleJobTypeChange}
+              >
+                <option value="all">All job types</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Internship">Internship</option>
+                <option value="Contract">Contract</option>
+              </select>
+            </div>
+
+            {activeFilterCount > 0 && (
+              <button
+                type="button"
+                className="clear-drawer-filters"
+                onClick={() => {
+                  onSearch(keywordDraft, locationDraft, "all", "all");
+                }}
+              >
+                Clear filters
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Removable active filter tags */}
+      {(keyword || location || activeFilterCount > 0) && (
+        <div className="active-filters-bar">
+          <span className="active-filters-label">Active filters:</span>
+          {keyword && (
+            <span className="filter-pill">
+              Title: {keyword}
+              <button
+                type="button"
+                onClick={handleClearKeyword}
+                aria-label="Remove title filter"
+              >
+                ×
+              </button>
+            </span>
+          )}
+          {location && (
+            <span className="filter-pill">
+              Location: {location}
+              <button
+                type="button"
+                onClick={handleClearLocation}
+                aria-label="Remove location filter"
+              >
+                ×
+              </button>
+            </span>
+          )}
+          {experience !== "all" && (
+            <span className="filter-pill">
+              Exp: {experience === "0" ? "Entry level" : `≤ ${experience} yrs`}
+              <button
+                type="button"
+                onClick={() =>
+                  onSearch(keywordDraft, locationDraft, "all", jobType)
+                }
+                aria-label="Remove experience filter"
+              >
+                ×
+              </button>
+            </span>
+          )}
+          {jobType !== "all" && (
+            <span className="filter-pill">
+              Type: {jobType}
+              <button
+                type="button"
+                onClick={() =>
+                  onSearch(keywordDraft, locationDraft, experience, "all")
+                }
+                aria-label="Remove job type filter"
+              >
+                ×
+              </button>
+            </span>
+          )}
           <button
-            className="jobs-reset-button"
             type="button"
-            onClick={handleClear}
-            title="Reset search and filters"
+            className="clear-all-pills"
+            onClick={handleClearAll}
           >
-            Clear
+            Clear all
           </button>
-        )}
-      </div>
-    </form>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -190,18 +293,18 @@ function Jobs() {
     });
   }, [experience, jobType, jobs, keyword, location]);
 
-  function applySearch(keywordDraft, locationDraft, experienceDraft, jobTypeDraft) {
+  function applySearch(keywordDraft, locationDraft, nextExperience, nextJobType) {
     const nextParams = new URLSearchParams();
     const nextKeyword = (keywordDraft || "").trim();
     const nextLocation = (locationDraft || "").trim();
 
     if (nextKeyword) nextParams.set("q", nextKeyword);
     if (nextLocation) nextParams.set("location", nextLocation);
-    if (experienceDraft && experienceDraft !== "all") {
-      nextParams.set("experience", experienceDraft);
+    if (nextExperience && nextExperience !== "all") {
+      nextParams.set("experience", nextExperience);
     }
-    if (jobTypeDraft && jobTypeDraft !== "all") {
-      nextParams.set("type", jobTypeDraft);
+    if (nextJobType && nextJobType !== "all") {
+      nextParams.set("type", nextJobType);
     }
 
     setSearchParams(nextParams);
