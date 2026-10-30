@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Briefcase, Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import "./Navbar.css";
@@ -7,19 +7,25 @@ import "./Navbar.css";
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const isRecruiterView =
-    pathname.startsWith("/recruiter") ||
-    pathname.startsWith("/manage-jobs") ||
-    pathname.startsWith("/add-job") ||
-    pathname.startsWith("/edit-job") ||
-    pathname.startsWith("/applications");
+  const isRecruiter = user?.role === "recruiter";
+  const isCandidate = user?.role === "candidate";
+
+  function handleLogout() {
+    logout();
+    setMenuOpen(false);
+    navigate("/");
+  }
 
   return (
     <header className="navbar">
       {/* Brand Logo */}
-      <Link to="/" className="navbar-logo">
+      <Link
+        to={isRecruiter ? "/recruiter-dashboard" : "/"}
+        className="navbar-logo"
+      >
         <span className="logo-icon" aria-hidden="true">
           <Briefcase size={20} strokeWidth={2.4} />
         </span>
@@ -37,9 +43,10 @@ function Navbar() {
         {menuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* Navigation Links */}
+      {/* Navigation Links: Strict role-based rendering */}
       <nav className={`navbar-links ${menuOpen ? "menu-open" : ""}`}>
-        {isRecruiterView ? (
+        {isRecruiter ? (
+          /* Recruiter Navigation: ONLY visible to authenticated recruiters */
           <>
             <Link
               to="/recruiter-dashboard"
@@ -73,7 +80,8 @@ function Navbar() {
               Applications
             </Link>
           </>
-        ) : (
+        ) : isCandidate ? (
+          /* Candidate Navigation: Visible after candidate logs in */
           <>
             <Link
               to="/"
@@ -91,53 +99,80 @@ function Navbar() {
               Find Jobs
             </Link>
 
-            {/* Protected links - Only visible after login */}
-            {user && (
-              <Link
-                to="/my-applications"
-                className={pathname === "/my-applications" ? "active" : ""}
-                onClick={() => setMenuOpen(false)}
-              >
-                My Applications
-              </Link>
-            )}
+            <Link
+              to="/my-applications"
+              className={pathname === "/my-applications" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              My Applications
+            </Link>
+          </>
+        ) : (
+          /* Public / Unauthenticated Navigation */
+          <>
+            <Link
+              to="/"
+              className={pathname === "/" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/jobs"
+              className={pathname === "/jobs" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Find Jobs
+            </Link>
           </>
         )}
       </nav>
 
       {/* Right Side Actions */}
       <div className="navbar-actions">
-        {isRecruiterView ? (
+        {isRecruiter ? (
+          /* Recruiter authenticated user actions */
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                fontSize: "12px",
-                fontWeight: 700,
+                gap: "6px",
+                fontSize: "13px",
+                fontWeight: 600,
                 color: "var(--color-deep, #203832)",
-                background: "rgba(99, 107, 47, 0.12)",
-                padding: "5px 12px",
+                background: "rgba(255, 255, 255, 0.85)",
+                padding: "6px 14px",
                 borderRadius: "20px",
-                border: "1px solid rgba(99, 107, 47, 0.25)",
-                letterSpacing: "0.5px",
-                textTransform: "uppercase",
+                border: "1px solid var(--color-border, #e5e6dc)",
               }}
             >
-              Recruiter Mode
+              <Briefcase size={14} color="var(--color-primary, #636b2f)" />
+              <span>Recruiter: {user.name || user.email}</span>
             </span>
 
-            <Link
-              to="/jobs"
-              className="register-button"
-              style={{ padding: "8px 16px", fontSize: "13px" }}
-              onClick={() => setMenuOpen(false)}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="login-link"
+              style={{
+                background: "none",
+                border: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                cursor: "pointer",
+                padding: "6px 8px",
+              }}
+              title="Sign Out"
             >
-              Candidate Portal
-            </Link>
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </button>
           </div>
-        ) : user ? (
-          // Shown when candidate is logged in
+        ) : isCandidate ? (
+          /* Candidate authenticated user actions */
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <span
               style={{
@@ -154,12 +189,12 @@ function Navbar() {
               }}
             >
               <User size={14} color="var(--color-primary)" />
-              {user.name}
+              <span>{user.name}</span>
             </span>
 
             <button
               type="button"
-              onClick={logout}
+              onClick={handleLogout}
               className="login-link"
               style={{
                 background: "none",
@@ -177,7 +212,7 @@ function Navbar() {
             </button>
           </div>
         ) : (
-          // Shown when user is not logged in
+          /* Unauthenticated user actions */
           <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
             <Link
               to="/login"

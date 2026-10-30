@@ -1,6 +1,6 @@
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import Jobs from "./pages/jobs";
@@ -32,19 +32,74 @@ function App() {
             path="/candidate-register"
             element={<CandidateRegister />}
           />
-          <Route path="/my-applications" element={<MyApplications />} />
 
-          {/* Recruiter routes */}
+          {/* Candidate protected routes */}
+          <Route
+            path="/my-applications"
+            element={
+              <ProtectedRoute role="candidate">
+                <MyApplications />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Recruiter protected routes */}
           <Route
             path="/recruiter-dashboard"
-            element={<RecruiterDashboard />}
+            element={
+              <ProtectedRoute role="recruiter">
+                <RecruiterDashboard />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/manage-jobs" element={<ManageJobs />} />
-          <Route path="/add-job" element={<AddJob />} />
-          <Route path="/edit-job/:id" element={<EditJob />} />
-          <Route path="/edit-job/:jobId" element={<EditJob />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/applications/:id" element={<Applications />} />
+          <Route
+            path="/manage-jobs"
+            element={
+              <ProtectedRoute role="recruiter">
+                <ManageJobs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-job"
+            element={
+              <ProtectedRoute role="recruiter">
+                <AddJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-job/:id"
+            element={
+              <ProtectedRoute role="recruiter">
+                <EditJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/edit-job/:jobId"
+            element={
+              <ProtectedRoute role="recruiter">
+                <EditJob />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/applications"
+            element={
+              <ProtectedRoute role="recruiter">
+                <Applications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/applications/:id"
+            element={
+              <ProtectedRoute role="recruiter">
+                <Applications />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Fallback */}
           <Route path="*" element={<NotFound />} />
