@@ -8,7 +8,6 @@ import {
   User,
   Building2,
   BriefcaseBusiness,
-  Sparkles,
 } from "lucide-react";
 import { useAuth } from "../context/useAuth";
 import { getCandidates, createCandidate } from "../services/api";
@@ -63,30 +62,6 @@ function Login({ initialMode = "signin" }) {
       const next = new URLSearchParams(prev);
       next.set("mode", newMode);
       return next;
-    });
-  }
-
-  function handleDemoRecruiter() {
-    setRoleOverride("recruiter");
-    setModeOverride("signin");
-    setName("Sarah Jenkins");
-    setCompany("L&T Technology Services");
-    setEmail("recruiter@careerconnect.com");
-    setPassword("recruiter123");
-    setNotice({
-      type: "info",
-      text: "Demo recruiter credentials loaded! Click 'Sign In as Recruiter' below.",
-    });
-  }
-
-  function handleDemoCandidate() {
-    setRoleOverride("candidate");
-    setModeOverride("signin");
-    setEmail("suren@example.com");
-    setPassword("candidate123");
-    setNotice({
-      type: "info",
-      text: "Demo candidate credentials loaded! Click 'Sign In as Candidate' below.",
     });
   }
 
@@ -467,22 +442,6 @@ function Login({ initialMode = "signin" }) {
                 </button>
               </div>
             </div>
-
-            {/* Demo prefill chip */}
-            {!isRegister && (
-              <button
-                type="button"
-                className="portal-demo-chip"
-                onClick={isRecruiter ? handleDemoRecruiter : handleDemoCandidate}
-              >
-                <Sparkles size={14} />
-                <span>
-                  {isRecruiter
-                    ? "Fill Demo Recruiter (recruiter@careerconnect.com)"
-                    : "Fill Demo Candidate (suren@example.com)"}
-                </span>
-              </button>
-            )}
 
             <button
               type="submit"
