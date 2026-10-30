@@ -52,7 +52,7 @@ function RecruiterDashboard() {
       setError("");
       await deleteJob(selectedJob.id);
       setJobs((current) =>
-        current.filter((job) => String(job.id) !== String(selectedJob.id))
+        current.filter((job) => String(job.id) !== String(selectedJob.id)),
       );
       setShowDeleteDialog(false);
       setSelectedJob(null);
@@ -63,7 +63,7 @@ function RecruiterDashboard() {
   };
 
   const activeJobsCount = jobs.filter(
-    (job) => !job.status || job.status.toLowerCase() === "active"
+    (job) => !job.status || job.status.toLowerCase() === "active",
   ).length;
 
   return (
@@ -75,7 +75,10 @@ function RecruiterDashboard() {
           <div>
             <p className="dashboard-eyebrow">Recruiter Workspace</p>
             <h1>Recruiter Dashboard</h1>
-            <p>Manage your job postings, track candidate applications, and update pipeline statuses.</p>
+            <p>
+              Manage your job postings, track candidate applications, and update
+              pipeline statuses.
+            </p>
           </div>
 
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
@@ -105,17 +108,14 @@ function RecruiterDashboard() {
           <StatusCard
             title="Total Jobs"
             count={loading ? "..." : jobs.length}
-            icon="💼"
           />
           <StatusCard
             title="Total Applications"
             count={loading ? "..." : applications.length}
-            icon="📄"
           />
           <StatusCard
             title="Active Jobs"
             count={loading ? "..." : activeJobsCount}
-            icon="🟢"
           />
         </section>
 
@@ -123,7 +123,10 @@ function RecruiterDashboard() {
           <div className="dashboard-section-heading">
             <div>
               <h2>Your Job Postings</h2>
-              <p>Review, edit, or delete published job vacancies, and inspect applicant lists.</p>
+              <p>
+                Review, edit, or delete published job vacancies, and inspect
+                applicant lists.
+              </p>
             </div>
           </div>
 
@@ -137,9 +140,7 @@ function RecruiterDashboard() {
                 setSelectedJob(job);
                 setShowDeleteDialog(true);
               }}
-              onViewApplicants={(job) =>
-                navigate(`/applications/${job.id}`)
-              }
+              onViewApplicants={(job) => navigate(`/applications/${job.id}`)}
             />
           )}
         </section>
