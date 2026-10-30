@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -13,7 +13,6 @@ import ManageJobs from "./pages/ManageJobs";
 import AddJob from "./pages/AddJob";
 import EditJob from "./pages/EditJob";
 import Applications from "./pages/Applications";
-import NotFound from "./pages/NotFound";
 
 import "./App.css";
 
@@ -102,7 +101,7 @@ function App() {
           />
 
           {/* Fallback */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
