@@ -6,26 +6,35 @@ import JobForm from "../components/recruiter/JobForm";
 import { createJob } from "../services/api";
 import "./RecruiterDashboard.css";
 
-function formatSalary(min, max) {
-  if (!min && !max) return "";
-  const numMin = Number(min);
-  const numMax = Number(max);
-  if (numMin && numMax) {
-    if (numMin >= 100000 && numMax >= 100000) {
-      const minLpa = (numMin / 100000).toFixed(numMin % 100000 === 0 ? 0 : 1);
-      const maxLpa = (numMax / 100000).toFixed(numMax % 100000 === 0 ? 0 : 1);
-      return `₹${minLpa} - ${maxLpa} LPA`;
-    }
-    return `₹${numMin.toLocaleString("en-IN")} - ₹${numMax.toLocaleString("en-IN")}`;
+// Helper function to format salary string (e.g. ₹5 - 10 LPA)
+function formatSalary(minSalary, maxSalary) {
+  if (!minSalary && !maxSalary) {
+    return "";
   }
-  if (numMin) {
-    if (numMin >= 100000) {
-      const lpa = (numMin / 100000).toFixed(numMin % 100000 === 0 ? 0 : 1);
-      return `₹${lpa} LPA`;
+
+  const min = Number(minSalary);
+  const max = Number(maxSalary);
+
+  // If both min and max are provided
+  if (min > 0 && max > 0) {
+    if (min >= 100000 && max >= 100000) {
+      const minInLakhs = (min / 100000).toFixed(1).replace(".0", "");
+      const maxInLakhs = (max / 100000).toFixed(1).replace(".0", "");
+      return "₹" + minInLakhs + " - " + maxInLakhs + " LPA";
     }
-    return `₹${numMin.toLocaleString("en-IN")}`;
+    return "₹" + min.toLocaleString("en-IN") + " - ₹" + max.toLocaleString("en-IN");
   }
-  return String(min || max);
+
+  // If only min is provided
+  if (min > 0) {
+    if (min >= 100000) {
+      const minInLakhs = (min / 100000).toFixed(1).replace(".0", "");
+      return "₹" + minInLakhs + " LPA";
+    }
+    return "₹" + min.toLocaleString("en-IN");
+  }
+
+  return String(minSalary || maxSalary);
 }
 
 function AddJob() {
@@ -33,19 +42,36 @@ function AddJob() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (formData) => {
+  // Function to navigate back to recruiter dashboard
+  function handleBack() {
+    navigate("/recruiter-dashboard");
+  }
+
+  // Handle form submission to create a new job
+  async function handleSubmit(formData) {
     setIsSubmitting(true);
     setError("");
 
     try {
-      const skills = Array.isArray(formData.skills)
-        ? formData.skills
-        : formData.skills
-            .split(",")
-            .map((skill) => skill.trim())
-            .filter(Boolean);
+      // Convert skills string into an array of clean skill names
+      let skillsList = [];
+      if (Array.isArray(formData.skills)) {
+        skillsList = formData.skills;
+      } else if (typeof formData.skills === "string") {
+        const rawSkills = formData.skills.split(",");
+        for (let i = 0; i < rawSkills.length; i++) {
+          const trimmedSkill = rawSkills[i].trim();
+          if (trimmedSkill !== "") {
+            skillsList.push(trimmedSkill);
+          }
+        }
+      }
 
-      const jobPayload = {
+      // Format current date as YYYY-MM-DD
+      const today = new Date().toISOString().split("T")[0];
+
+      // Prepare payload object for API
+      const newJob = {
         title: formData.title.trim(),
         company: formData.company.trim(),
         location: formData.location.trim(),
@@ -57,19 +83,19 @@ function AddJob() {
         maxSalary: Number(formData.maxSalary) || 0,
         experience: Number(formData.minExperience) || 0,
         salary: formatSalary(formData.minSalary, formData.maxSalary),
-        skills,
+        skills: skillsList,
         description: formData.description.trim(),
-        postedDate: new Date().toISOString().split("T")[0],
+        postedDate: today,
       };
 
-      await createJob(jobPayload);
+      await createJob(newJob);
       navigate("/recruiter-dashboard");
     } catch (err) {
       setError(err.message || "Unable to post the job. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
 
   return (
     <div>
@@ -78,7 +104,7 @@ function AddJob() {
       <main style={{ minHeight: "80vh", padding: "40px 24px 80px", maxWidth: "960px", margin: "0 auto" }}>
         <button
           type="button"
-          onClick={() => navigate("/recruiter-dashboard")}
+          onClick={handleBack}
           className="dashboard-add-button"
           style={{
             background: "transparent",
@@ -95,7 +121,7 @@ function AddJob() {
 
         <JobForm
           onSubmit={handleSubmit}
-          onCancel={() => navigate("/recruiter-dashboard")}
+          onCancel={handleBack}
         />
 
         {isSubmitting && (

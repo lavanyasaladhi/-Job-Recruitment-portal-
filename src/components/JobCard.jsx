@@ -25,7 +25,7 @@ function JobCard({ job }) {
         {job.company && <p className="job-company">{job.company}</p>}
 
         <div className="job-meta">
-          {job.location && <span>📍 {job.location}</span>}
+          {job.location && <span> ⌖ {job.location}</span>}
           {job.experience !== "" && job.experience !== undefined && (
             <span>◷ {job.experience} years experience</span>
           )}
