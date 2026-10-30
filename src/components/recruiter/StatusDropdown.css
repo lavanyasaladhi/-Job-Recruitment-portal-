@@ -1,7 +1,6 @@
-
 .status-dropdown {
   min-width: 135px;
-  padding: 9px 30px 9px 12px;
+  padding: 8px 12px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   background-color: #ffffff;
@@ -14,8 +13,8 @@
 
 .status-dropdown:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  border-color: #636b2f;
+  box-shadow: 0 0 0 3px rgba(99, 107, 47, 0.15);
 }
 
 .status-dropdown:disabled {
@@ -23,6 +22,7 @@
   opacity: 0.6;
 }
 
+.status-under-review,
 .status-pending {
   color: #92400e;
   background-color: #fffbeb;
@@ -41,6 +41,7 @@
   border-color: #fecaca;
 }
 
+.status-accepted,
 .status-selected {
   color: #047857;
   background-color: #ecfdf5;

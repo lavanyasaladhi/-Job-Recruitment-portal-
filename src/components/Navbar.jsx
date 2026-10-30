@@ -9,6 +9,13 @@ function Navbar() {
   const { pathname } = useLocation();
   const { user, logout } = useAuth();
 
+  const isRecruiterView =
+    pathname.startsWith("/recruiter") ||
+    pathname.startsWith("/manage-jobs") ||
+    pathname.startsWith("/add-job") ||
+    pathname.startsWith("/edit-job") ||
+    pathname.startsWith("/applications");
+
   return (
     <header className="navbar">
       {/* Brand Logo */}
@@ -32,37 +39,104 @@ function Navbar() {
 
       {/* Navigation Links */}
       <nav className={`navbar-links ${menuOpen ? "menu-open" : ""}`}>
-        <Link
-          to="/"
-          className={pathname === "/" ? "active" : ""}
-          onClick={() => setMenuOpen(false)}
-        >
-          Home
-        </Link>
+        {isRecruiterView ? (
+          <>
+            <Link
+              to="/recruiter-dashboard"
+              className={pathname === "/recruiter-dashboard" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
 
-        <Link
-          to="/jobs"
-          className={pathname === "/jobs" ? "active" : ""}
-          onClick={() => setMenuOpen(false)}
-        >
-          Find Jobs
-        </Link>
+            <Link
+              to="/manage-jobs"
+              className={pathname === "/manage-jobs" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Manage Jobs
+            </Link>
 
-        {/* Protected links - Only visible after login */}
-        {user && (
-          <Link
-            to="/my-applications"
-            className={pathname === "/my-applications" ? "active" : ""}
-            onClick={() => setMenuOpen(false)}
-          >
-            My Applications
-          </Link>
+            <Link
+              to="/add-job"
+              className={pathname === "/add-job" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Post Job
+            </Link>
+
+            <Link
+              to="/applications"
+              className={pathname.startsWith("/applications") ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Applications
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/"
+              className={pathname === "/" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/jobs"
+              className={pathname === "/jobs" ? "active" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              Find Jobs
+            </Link>
+
+            {/* Protected links - Only visible after login */}
+            {user && (
+              <Link
+                to="/my-applications"
+                className={pathname === "/my-applications" ? "active" : ""}
+                onClick={() => setMenuOpen(false)}
+              >
+                My Applications
+              </Link>
+            )}
+          </>
         )}
       </nav>
 
       {/* Right Side Actions */}
       <div className="navbar-actions">
-        {user ? (
+        {isRecruiterView ? (
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                fontSize: "12px",
+                fontWeight: 700,
+                color: "var(--color-deep, #203832)",
+                background: "rgba(99, 107, 47, 0.12)",
+                padding: "5px 12px",
+                borderRadius: "20px",
+                border: "1px solid rgba(99, 107, 47, 0.25)",
+                letterSpacing: "0.5px",
+                textTransform: "uppercase",
+              }}
+            >
+              Recruiter Mode
+            </span>
+
+            <Link
+              to="/jobs"
+              className="register-button"
+              style={{ padding: "8px 16px", fontSize: "13px" }}
+              onClick={() => setMenuOpen(false)}
+            >
+              Candidate Portal
+            </Link>
+          </div>
+        ) : user ? (
           // Shown when candidate is logged in
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <span

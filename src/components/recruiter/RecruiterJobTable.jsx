@@ -1,4 +1,3 @@
-
 import "./RecruiterJobTable.css";
 
 function RecruiterJobTable({
@@ -33,46 +32,69 @@ function RecruiterJobTable({
 
           <tbody>
             {jobs.length > 0 ? (
-              jobs.map((job) => (
-                <tr key={job.id}>
-                  <td>
-                    <span className="job-title">
-                      {job.title}
-                    </span>
-                  </td>
+              jobs.map((job) => {
+                const experienceLabel =
+                  job.minExperience !== undefined &&
+                  job.maxExperience !== undefined &&
+                  job.minExperience !== job.maxExperience
+                    ? `${job.minExperience}–${job.maxExperience} yrs`
+                    : job.minExperience !== undefined && job.minExperience > 0
+                    ? `${job.minExperience}+ yrs`
+                    : job.experience
+                    ? `${job.experience} yrs`
+                    : "Fresher";
 
-                  <td>{job.location || "Not specified"}</td>
+                return (
+                  <tr key={job.id}>
+                    <td>
+                      <span className="job-title">
+                        {job.title}
+                      </span>
+                      {job.company && (
+                        <div style={{ fontSize: "12px", color: "#686a60", marginTop: "2px" }}>
+                          {job.company}
+                        </div>
+                      )}
+                    </td>
 
-                  <td>
-                    {job.minExperience ?? 0}–{job.maxExperience ?? 0} years
-                  </td>
+                    <td>
+                      <div>{job.location || "Not specified"}</div>
+                      {(job.type || job.jobType) && (
+                        <span style={{ fontSize: "11px", color: "#636b2f", fontWeight: 600 }}>
+                          {job.type || job.jobType}
+                        </span>
+                      )}
+                    </td>
 
-                  <td>
-                    <div className="job-actions">
-                      <button
-                        className="job-action-btn edit-btn"
-                        onClick={() => onEdit?.(job)}
-                      >
-                        Edit
-                      </button>
+                    <td>{experienceLabel}</td>
 
-                      <button
-                        className="job-action-btn applicants-btn"
-                        onClick={() => onViewApplicants?.(job)}
-                      >
-                        Applicants
-                      </button>
+                    <td>
+                      <div className="job-actions">
+                        <button
+                          className="job-action-btn edit-btn"
+                          onClick={() => onEdit?.(job)}
+                        >
+                          Edit
+                        </button>
 
-                      <button
-                        className="job-action-btn delete-btn"
-                        onClick={() => onDelete?.(job)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+                        <button
+                          className="job-action-btn applicants-btn"
+                          onClick={() => onViewApplicants?.(job)}
+                        >
+                          Applicants
+                        </button>
+
+                        <button
+                          className="job-action-btn delete-btn"
+                          onClick={() => onDelete?.(job)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="4" className="empty-jobs">

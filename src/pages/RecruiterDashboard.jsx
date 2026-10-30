@@ -1,6 +1,7 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import StatusCard from "../components/recruiter/StatusCard";
 import RecruiterJobTable from "../components/recruiter/RecruiterJobTable";
 import ConfirmDialog from "../components/recruiter/ConfirmDialog";
@@ -51,7 +52,7 @@ function RecruiterDashboard() {
       setError("");
       await deleteJob(selectedJob.id);
       setJobs((current) =>
-        current.filter((job) => job.id !== selectedJob.id)
+        current.filter((job) => String(job.id) !== String(selectedJob.id))
       );
       setShowDeleteDialog(false);
       setSelectedJob(null);
@@ -61,84 +62,103 @@ function RecruiterDashboard() {
     }
   };
 
+  const activeJobsCount = jobs.filter(
+    (job) => !job.status || job.status.toLowerCase() === "active"
+  ).length;
+
   return (
-    <div className="recruiter-dashboard">
-      <header className="dashboard-header">
-        <div>
-          <p className="dashboard-eyebrow">Recruiter Workspace</p>
-          <h1>Recruiter Dashboard</h1>
-          <p>Manage your job postings and track applications.</p>
-        </div>
+    <div>
+      <Navbar />
 
-        <button
-          className="dashboard-add-button"
-          onClick={() => navigate("/add-job")}
-        >
-          Add New Job
-        </button>
-      </header>
-
-      {error && <p role="alert">{error}</p>}
-
-      <section className="dashboard-stats">
-        <StatusCard
-          title="Total Jobs"
-          count={loading ? "..." : jobs.length}
-          icon="💼"
-        />
-        <StatusCard
-          title="Total Applications"
-          count={loading ? "..." : applications.length}
-          icon="📄"
-        />
-        <StatusCard
-          title="Active Jobs"
-          count={
-            loading
-              ? "..."
-              : jobs.filter((job) => job.status?.toLowerCase() === "active").length
-          }
-          icon="🟢"
-        />
-      </section>
-
-      <section className="dashboard-jobs-section">
-        <div className="dashboard-section-heading">
+      <main className="recruiter-dashboard">
+        <header className="dashboard-header">
           <div>
-            <h2>Your Job Postings</h2>
-            <p>Review and manage your published opportunities.</p>
+            <p className="dashboard-eyebrow">Recruiter Workspace</p>
+            <h1>Recruiter Dashboard</h1>
+            <p>Manage your job postings, track candidate applications, and update pipeline statuses.</p>
           </div>
-        </div>
 
-        {loading ? (
-          <p>Loading jobs...</p>
-        ) : (
-          <RecruiterJobTable
-            jobs={jobs}
-            onEdit={(job) => navigate(`/edit-job/${job.id}`)}
-            onDelete={(job) => {
-              setSelectedJob(job);
-              setShowDeleteDialog(true);
-            }}
-            onViewApplicants={(job) =>
-              navigate(`/applications/${job.id}`)
-            }
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <button
+              className="dashboard-add-button"
+              onClick={() => navigate("/add-job")}
+            >
+              + Post New Job
+            </button>
+            <button
+              className="dashboard-add-button"
+              style={{
+                background: "transparent",
+                color: "var(--dashboard-primary, #636b2f)",
+                borderColor: "var(--dashboard-primary, #636b2f)",
+              }}
+              onClick={() => navigate("/applications")}
+            >
+              View All Applications
+            </button>
+          </div>
+        </header>
+
+        {error && <p role="alert">{error}</p>}
+
+        <section className="dashboard-stats">
+          <StatusCard
+            title="Total Jobs"
+            count={loading ? "..." : jobs.length}
+            icon="💼"
           />
-        )}
-      </section>
+          <StatusCard
+            title="Total Applications"
+            count={loading ? "..." : applications.length}
+            icon="📄"
+          />
+          <StatusCard
+            title="Active Jobs"
+            count={loading ? "..." : activeJobsCount}
+            icon="🟢"
+          />
+        </section>
 
-      <ConfirmDialog
-        isOpen={showDeleteDialog}
-        title="Delete Job?"
-        message={`Are you sure you want to delete "${selectedJob?.title ?? "this job"}"?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => {
-          setShowDeleteDialog(false);
-          setSelectedJob(null);
-        }}
-      />
+        <section className="dashboard-jobs-section">
+          <div className="dashboard-section-heading">
+            <div>
+              <h2>Your Job Postings</h2>
+              <p>Review, edit, or delete published job vacancies, and inspect applicant lists.</p>
+            </div>
+          </div>
+
+          {loading ? (
+            <p>Loading jobs...</p>
+          ) : (
+            <RecruiterJobTable
+              jobs={jobs}
+              onEdit={(job) => navigate(`/edit-job/${job.id}`)}
+              onDelete={(job) => {
+                setSelectedJob(job);
+                setShowDeleteDialog(true);
+              }}
+              onViewApplicants={(job) =>
+                navigate(`/applications/${job.id}`)
+              }
+            />
+          )}
+        </section>
+
+        <ConfirmDialog
+          isOpen={showDeleteDialog}
+          title="Delete Job?"
+          message={`Are you sure you want to delete "${selectedJob?.title ?? "this job"}"? This cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={handleDeleteConfirm}
+          onCancel={() => {
+            setShowDeleteDialog(false);
+            setSelectedJob(null);
+          }}
+        />
+      </main>
+
+      <Footer />
     </div>
   );
 }

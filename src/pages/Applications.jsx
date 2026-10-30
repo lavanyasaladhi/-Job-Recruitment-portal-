@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Search, Filter, Trash2 } from "lucide-react";
+import { Link, useParams } from "react-router-dom";
+import { Search, Filter, Trash2, ArrowLeft } from "lucide-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { getApplications, updateApplication, deleteApplication } from "../services/api";
+import StatusDropdown from "../components/recruiter/StatusDropdown";
+import { getApplications, updateApplication, deleteApplication, getJobById } from "../services/api";
 import "./PortalPages.css";
 
 function Applications() {
+  const { id, jobId } = useParams();
+  const filterJobId = id || jobId;
+
   const [applicationList, setApplicationList] = useState([]);
+  const [targetJob, setTargetJob] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [loading, setLoading] = useState(true);
@@ -15,17 +20,27 @@ function Applications() {
   const [updatingId, setUpdatingId] = useState(null);
   const [notice, setNotice] = useState(null);
 
-  // Fetch all applications
+  // Fetch applications (and target job if filtering by job ID)
   useEffect(() => {
     const controller = new AbortController();
 
-    async function loadApplications() {
+    async function loadData() {
       setLoading(true);
       setError("");
 
       try {
-        const data = await getApplications({ signal: controller.signal });
-        setApplicationList(data);
+        const promises = [getApplications({ signal: controller.signal })];
+        if (filterJobId) {
+          promises.push(getJobById(filterJobId, { signal: controller.signal }).catch(() => null));
+        }
+
+        const [appsData, jobData] = await Promise.all(promises);
+        setApplicationList(appsData);
+        if (jobData) {
+          setTargetJob(jobData);
+        } else {
+          setTargetJob(null);
+        }
       } catch (err) {
         if (!controller.signal.aborted) {
           setError(err.message || "Failed to load applications.");
@@ -37,9 +52,9 @@ function Applications() {
       }
     }
 
-    loadApplications();
+    loadData();
     return () => controller.abort();
-  }, []);
+  }, [filterJobId]);
 
   // Handle changing application status (Recruiter action)
   async function handleStatusChange(application, newStatus) {
@@ -58,7 +73,9 @@ function Applications() {
       // Update in local state
       setApplicationList((previousList) =>
         previousList.map((app) =>
-          app.id === application.id ? { ...app, status: updated.status } : app
+          String(app.id) === String(application.id)
+            ? { ...app, status: updated.status }
+            : app
         )
       );
 
@@ -78,15 +95,17 @@ function Applications() {
   }
 
   // Handle deleting application
-  async function handleDeleteApplication(id, candidateName) {
+  async function handleDeleteApplication(appId, candidateName) {
     const confirmed = window.confirm(
       `Delete application from ${candidateName}?`
     );
     if (!confirmed) return;
 
     try {
-      await deleteApplication(id);
-      setApplicationList((prev) => prev.filter((app) => app.id !== id));
+      await deleteApplication(appId);
+      setApplicationList((prev) =>
+        prev.filter((app) => String(app.id) !== String(appId))
+      );
       setNotice({
         type: "success",
         text: `Application from ${candidateName} has been removed.`,
@@ -100,8 +119,13 @@ function Applications() {
     }
   }
 
-  // Filter application list based on search and status
+  // Filter application list based on search, status, and job ID
   const filteredApplications = applicationList.filter((app) => {
+    // Filter by specific job if active
+    if (filterJobId && String(app.jobId) !== String(filterJobId)) {
+      return false;
+    }
+
     // Status filter
     const matchesStatus =
       statusFilter === "all" ||
@@ -135,13 +159,69 @@ function Applications() {
             </p>
           </div>
 
-          <Link to="/recruiter-dashboard" className="portal-secondary-btn">
-            Recruiter Dashboard
-          </Link>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <Link to="/recruiter-dashboard" className="portal-secondary-btn">
+              <ArrowLeft size={16} />
+              Recruiter Dashboard
+            </Link>
+            <Link to="/manage-jobs" className="portal-secondary-btn">
+              Manage Jobs
+            </Link>
+          </div>
         </div>
 
         {notice && (
           <div className={`portal-alert ${notice.type}`}>{notice.text}</div>
+        )}
+
+        {/* Filtered by Job Banner */}
+        {filterJobId && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              background: "#f0f2eb",
+              border: "1px solid #d8ddcf",
+              padding: "14px 20px",
+              borderRadius: "12px",
+              marginBottom: "20px",
+              gap: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <span
+                style={{
+                  fontSize: "11px",
+                  textTransform: "uppercase",
+                  letterSpacing: "1.2px",
+                  color: "var(--color-primary)",
+                  fontWeight: 700,
+                }}
+              >
+                Filtered by Job Vacancy
+              </span>
+              <h3
+                style={{
+                  margin: "4px 0 0",
+                  color: "var(--color-deep)",
+                  fontSize: "17px",
+                  fontWeight: 700,
+                }}
+              >
+                {targetJob ? `${targetJob.title} (${targetJob.company})` : `Job #${filterJobId}`}
+              </h3>
+            </div>
+
+            <Link
+              to="/applications"
+              className="portal-secondary-btn"
+              style={{ padding: "7px 14px", fontSize: "13px" }}
+            >
+              Show All Applications
+            </Link>
+          </div>
         )}
 
         {/* Filter and Search Bar */}
@@ -167,7 +247,9 @@ function Applications() {
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
-              <option value="all">All Statuses ({applicationList.length})</option>
+              <option value="all">
+                All Statuses ({filteredApplications.length})
+              </option>
               <option value="under review">Under Review</option>
               <option value="shortlisted">Shortlisted</option>
               <option value="accepted">Accepted</option>
@@ -189,10 +271,15 @@ function Applications() {
           <div className="portal-empty-state">
             <h3>No applications found</h3>
             <p>
-              {searchTerm || statusFilter !== "all"
-                ? "No applications matched your active search or status filter."
+              {searchTerm || statusFilter !== "all" || filterJobId
+                ? "No applications matched your active search or filter."
                 : "No candidate applications have been received yet."}
             </p>
+            {filterJobId && (
+              <Link to="/applications" className="portal-primary-btn" style={{ marginTop: "12px" }}>
+                View All Applications
+              </Link>
+            )}
           </div>
         ) : (
           <div className="portal-table-container">
@@ -218,7 +305,7 @@ function Applications() {
                     <tr key={app.id}>
                       {/* Candidate info */}
                       <td>
-                        <strong>{app.candidateName}</strong>
+                        <strong>{app.candidateName || "Candidate"}</strong>
                         {app.candidateEmail && (
                           <div style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
                             {app.candidateEmail}
@@ -228,10 +315,14 @@ function Applications() {
 
                       {/* Job details */}
                       <td>
-                        <div><strong>{app.jobTitle}</strong></div>
-                        <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
-                          {app.company}
-                        </span>
+                        <div>
+                          <strong>{app.jobTitle || "Job Opening"}</strong>
+                        </div>
+                        {app.company && (
+                          <span style={{ fontSize: "12px", color: "var(--color-text-muted)" }}>
+                            {app.company}
+                          </span>
+                        )}
                       </td>
 
                       {/* Date */}
@@ -246,24 +337,13 @@ function Applications() {
 
                       {/* Status Selector */}
                       <td>
-                        <select
-                          value={app.status || "Under Review"}
+                        <StatusDropdown
+                          status={app.status || "Under Review"}
                           disabled={isUpdating}
-                          onChange={(e) => handleStatusChange(app, e.target.value)}
-                          style={{
-                            padding: "6px 10px",
-                            borderRadius: "6px",
-                            border: "1px solid var(--color-border)",
-                            background: "var(--color-surface)",
-                            fontSize: "13px",
-                            fontWeight: 500,
-                          }}
-                        >
-                          <option value="Under Review">Under Review</option>
-                          <option value="Shortlisted">Shortlisted</option>
-                          <option value="Accepted">Accepted</option>
-                          <option value="Rejected">Rejected</option>
-                        </select>
+                          onChange={(newStatus) =>
+                            handleStatusChange(app, newStatus)
+                          }
+                        />
                       </td>
 
                       {/* Delete action */}

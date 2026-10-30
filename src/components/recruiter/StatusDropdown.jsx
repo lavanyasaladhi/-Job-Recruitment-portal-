@@ -1,29 +1,31 @@
-
 import "./StatusDropdown.css";
 
-const statuses = [
-  "Pending",
+const defaultStatuses = [
+  "Under Review",
   "Shortlisted",
+  "Accepted",
   "Rejected",
-  "Selected",
 ];
 
 function StatusDropdown({
-  status = "Pending",
+  status = "Under Review",
   onChange,
   disabled = false,
 }) {
+  const normalizedClass = `status-${status.toLowerCase().replace(/\s+/g, "-")}`;
+  const options = defaultStatuses.includes(status)
+    ? defaultStatuses
+    : [status, ...defaultStatuses];
+
   return (
     <select
-      className={`status-dropdown status-${status
-        .toLowerCase()
-        .replace(/\s+/g, "-")}`}
+      className={`status-dropdown ${normalizedClass}`}
       value={status}
       onChange={(e) => onChange?.(e.target.value)}
       disabled={disabled}
       aria-label="Application status"
     >
-      {statuses.map((item) => (
+      {options.map((item) => (
         <option key={item} value={item}>
           {item}
         </option>
