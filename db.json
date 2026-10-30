@@ -392,6 +392,18 @@
       "id": "MslCblOkaSU"
     }
   ],
-  "applications": [],
+  "applications": [
+    {
+      "jobId": "2",
+      "candidateId": 1793337226651,
+      "candidateName": "surendra.sabbella24",
+      "candidateEmail": "surendra.sabbella24@sasi.ac.in",
+      "jobTitle": "UI/UX Product Designer",
+      "company": "CreativePulse Studio",
+      "appliedDate": "2026-10-30",
+      "status": "Under Review",
+      "id": "xh1jwqNd8Tg"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }
