@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Briefcase, Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "../context/useAuth";
+import logoImg from "../assets/logo.png";
 import "./Navbar.css";
 
 function Navbar() {
@@ -27,7 +28,7 @@ function Navbar() {
         className="navbar-logo"
       >
         <span className="logo-icon" aria-hidden="true">
-          <Briefcase size={20} strokeWidth={2.4} />
+          <img src={logoImg} alt="CareerConnect Logo" className="logo-img" />
         </span>
         <span className="logo-text">CareerConnect</span>
       </Link>

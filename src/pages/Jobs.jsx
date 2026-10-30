@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -254,29 +254,28 @@ function Jobs() {
     return () => controller.abort();
   }, [retryKey]);
 
-  const filteredJobs = useMemo(() => {
-    const titleTerm = keyword.trim().toLowerCase();
-    const locationTerm = location.trim().toLowerCase();
+  const titleTerm = keyword.trim().toLowerCase();
+  const locationTerm = location.trim().toLowerCase();
 
-    return jobs.filter((job) => {
-      const matchesTitle = job.title.toLowerCase().includes(titleTerm);
-      const matchesLocation = job.location.toLowerCase().includes(locationTerm);
-      const years = getExperienceYears(job.experience);
-      const matchesExperience =
-        experience === "all" ||
-        (years !== null && years <= Number(experience));
-      const matchesJobType =
-        jobType === "all" ||
-        job.type.toLowerCase() === jobType.toLowerCase();
+  // Filter jobs based on search term, location, experience, and job type
+  const filteredJobs = jobs.filter((job) => {
+    const matchesTitle = job.title.toLowerCase().includes(titleTerm);
+    const matchesLocation = job.location.toLowerCase().includes(locationTerm);
+    const years = getExperienceYears(job.experience);
+    const matchesExperience =
+      experience === "all" ||
+      (years !== null && years <= Number(experience));
+    const matchesJobType =
+      jobType === "all" ||
+      job.type.toLowerCase() === jobType.toLowerCase();
 
-      return (
-        matchesTitle &&
-        matchesLocation &&
-        matchesExperience &&
-        matchesJobType
-      );
-    });
-  }, [experience, jobType, jobs, keyword, location]);
+    return (
+      matchesTitle &&
+      matchesLocation &&
+      matchesExperience &&
+      matchesJobType
+    );
+  });
 
   function applySearch(keywordDraft, locationDraft) {
     const nextParams = new URLSearchParams(searchParams);

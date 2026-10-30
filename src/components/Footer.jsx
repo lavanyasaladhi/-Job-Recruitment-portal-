@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Briefcase, Send, Check } from "lucide-react";
+import { Send, Check } from "lucide-react";
+import logoImg from "../assets/logo.png";
 import "./Footer.css";
 
 function Footer() {
@@ -22,7 +23,11 @@ function Footer() {
         <div className="footer-brand">
           <Link to="/" className="footer-logo">
             <span className="footer-logo-icon">
-              <Briefcase size={20} strokeWidth={2.4} />
+              <img
+                src={logoImg}
+                alt="CareerConnect Logo"
+                className="footer-logo-img"
+              />
             </span>
             <span>CareerConnect</span>
           </Link>
