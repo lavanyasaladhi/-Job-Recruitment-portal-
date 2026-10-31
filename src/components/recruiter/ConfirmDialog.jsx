@@ -1,4 +1,4 @@
-
+import { useEffect } from "react";
 import "./ConfirmDialog.css";
 
 function ConfirmDialog({
@@ -11,6 +11,20 @@ function ConfirmDialog({
   onCancel,
   isLoading = false,
 }) {
+  // Close dialog on Escape key press
+  useEffect(() => {
+    if (!isOpen) return;
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        onCancel?.();
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onCancel]);
+
   if (!isOpen) {
     return null;
   }

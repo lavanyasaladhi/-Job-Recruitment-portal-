@@ -1,5 +1,5 @@
-
 import "./ApplicantsTable.css";
+import StatusDropdown from "./StatusDropdown";
 
 function ApplicantsTable({ applicants = [], onStatusChange, onViewResume }) {
   return (
@@ -20,8 +20,8 @@ function ApplicantsTable({ applicants = [], onStatusChange, onViewResume }) {
           <thead>
             <tr>
               <th>Candidate</th>
-              <th>Experience</th>
-              <th>Resume</th>
+              <th>Position / Applied Date</th>
+              <th>Resume / Cover Note</th>
               <th>Application Status</th>
             </tr>
           </thead>
@@ -32,15 +32,22 @@ function ApplicantsTable({ applicants = [], onStatusChange, onViewResume }) {
                 <tr key={applicant.id}>
                   <td>
                     <div className="applicant-name">
-                      {applicant.name || applicant.candidateName || "Unknown"}
+                      {applicant.candidateName || applicant.name || "Candidate"}
                     </div>
                     <div className="applicant-email">
-                      {applicant.email || ""}
+                      {applicant.candidateEmail || applicant.email || ""}
                     </div>
                   </td>
 
                   <td>
-                    {applicant.experience ?? 0} years
+                    <div style={{ fontWeight: 600 }}>
+                      {applicant.jobTitle || "Job Application"}
+                    </div>
+                    {applicant.appliedDate && (
+                      <small style={{ color: "var(--color-text-muted, #536863)" }}>
+                        Applied: {applicant.appliedDate}
+                      </small>
+                    )}
                   </td>
 
                   <td>
@@ -52,6 +59,15 @@ function ApplicantsTable({ applicants = [], onStatusChange, onViewResume }) {
                       >
                         View Resume
                       </button>
+                    ) : applicant.coverLetter ? (
+                      <span
+                        title={applicant.coverLetter}
+                        style={{ fontSize: "12px", color: "var(--color-text-muted, #536863)" }}
+                      >
+                        {applicant.coverLetter.length > 40
+                          ? applicant.coverLetter.slice(0, 40) + "…"
+                          : applicant.coverLetter}
+                      </span>
                     ) : (
                       <span className="resume-unavailable">
                         Not available
@@ -60,19 +76,12 @@ function ApplicantsTable({ applicants = [], onStatusChange, onViewResume }) {
                   </td>
 
                   <td>
-                    <select
-                      className="applicant-status-select"
-                      value={applicant.status || "Pending"}
-                      onChange={(e) =>
-                        onStatusChange?.(applicant.id, e.target.value)
+                    <StatusDropdown
+                      status={applicant.status || "Under Review"}
+                      onChange={(newStatus) =>
+                        onStatusChange?.(applicant.id, newStatus)
                       }
-                      aria-label={`Update status for ${applicant.name || "applicant"}`}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Shortlisted">Shortlisted</option>
-                      <option value="Rejected">Rejected</option>
-                      <option value="Selected">Selected</option>
-                    </select>
+                    />
                   </td>
                 </tr>
               ))

@@ -12,15 +12,16 @@ function StatusDropdown({
   onChange,
   disabled = false,
 }) {
-  const normalizedClass = `status-${status.toLowerCase().replace(/\s+/g, "-")}`;
-  const options = defaultStatuses.includes(status)
+  const currentStatus = status || "Under Review";
+  const normalizedClass = `status-${currentStatus.toLowerCase().replace(/\s+/g, "-")}`;
+  const options = defaultStatuses.includes(currentStatus)
     ? defaultStatuses
-    : [status, ...defaultStatuses];
+    : [currentStatus, ...defaultStatuses];
 
   return (
     <select
       className={`status-dropdown ${normalizedClass}`}
-      value={status}
+      value={currentStatus}
       onChange={(e) => onChange?.(e.target.value)}
       disabled={disabled}
       aria-label="Application status"

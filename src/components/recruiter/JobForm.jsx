@@ -12,7 +12,9 @@ function JobForm({ initialData = {}, onSubmit, onCancel }) {
     maxExperience: initialData.maxExperience ?? "",
     minSalary: initialData.minSalary ?? "",
     maxSalary: initialData.maxSalary ?? "",
-    skills: initialData.skills || "",
+    skills: Array.isArray(initialData.skills)
+      ? initialData.skills.join(", ")
+      : initialData.skills || "",
     description: initialData.description || "",
   });
 
